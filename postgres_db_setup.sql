@@ -5,84 +5,76 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public.admin
 (
-    admin_id integer NOT NULL,
-    name character(1) COLLATE pg_catalog."default" NOT NULL,
-    surname character(1) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT admin_pkey PRIMARY KEY (admin_id)
+    id SERIAL PRIMARY KEY,
+    name TEXT COLLATE pg_catalog."default" NOT NULL,
+    surname TEXT COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.doctor
 (
-    doctor_id integer NOT NULL,
-    name character(1) COLLATE pg_catalog."default" NOT NULL,
-    surname character(1) COLLATE pg_catalog."default" NOT NULL,
-    sector_id integer NOT NULL,
-    CONSTRAINT doctor_pkey PRIMARY KEY (doctor_id)
+    id SERIAL PRIMARY KEY,
+    name TEXT COLLATE pg_catalog."default" NOT NULL,
+    surname TEXT COLLATE pg_catalog."default" NOT NULL,
+    sector_id integer NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.exam
 (
-    exam_id integer NOT NULL,
+    id SERIAL PRIMARY KEY,
     patient_id integer NOT NULL,
     doctor_id integer NOT NULL,
     done boolean NOT NULL,
     date date NOT NULL,
-    results_mongodb character(1) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT exam_pkey PRIMARY KEY (exam_id)
+    results_mongodb TEXT COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.nurse
 (
-    nurse_id integer NOT NULL,
-    name character(1) COLLATE pg_catalog."default" NOT NULL,
-    surname character(1) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT nurse_pkey PRIMARY KEY (nurse_id)
+    id SERIAL PRIMARY KEY,
+    name TEXT COLLATE pg_catalog."default" NOT NULL,
+    surname TEXT COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.patient
 (
-    patient_id integer NOT NULL,
+    id SERIAL PRIMARY KEY,
     doctor_id integer NOT NULL,
     admin_id integer NOT NULL,
     status_id integer NOT NULL,
-    name character(1) COLLATE pg_catalog."default" NOT NULL,
-    surname character(1) COLLATE pg_catalog."default" NOT NULL,
+    name TEXT COLLATE pg_catalog."default" NOT NULL,
+    surname TEXT COLLATE pg_catalog."default" NOT NULL,
     birth_date date NOT NULL,
     gender character(1) COLLATE pg_catalog."default",
-    history_mongo_id character(1) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT patient_pkey PRIMARY KEY (patient_id)
+    history_mongo_id TEXT COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.sector
 (
-    sector_id integer NOT NULL,
-    name character(1) COLLATE pg_catalog."default" NOT NULL,
-    area character(1) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT sector_pkey PRIMARY KEY (sector_id)
+    id SERIAL PRIMARY KEY,
+    name TEXT COLLATE pg_catalog."default" NOT NULL,
+    area TEXT COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.status
 (
-    status_id integer NOT NULL,
-    value character(1) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT status_pkey PRIMARY KEY (status_id)
+    id SERIAL PRIMARY KEY,
+    value TEXT COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.treatment
 (
-    treatment_id integer NOT NULL,
+    id SERIAL PRIMARY KEY,
     nurse_id integer NOT NULL,
     patient_id integer NOT NULL,
     sector_id integer NOT NULL,
     date date NOT NULL,
-    treatment_mongodb_id character(1) COLLATE pg_catalog."default" NOT NULL,
-    done boolean NOT NULL,
-    CONSTRAINT treatment_pkey PRIMARY KEY (treatment_id)
+    treatment_mongodb_id TEXT COLLATE pg_catalog."default" NOT NULL,
+    done boolean NOT NULL
 );
 
 ALTER TABLE IF EXISTS public.doctor
     ADD CONSTRAINT doctor_to_sector FOREIGN KEY (sector_id)
-    REFERENCES public.sector (sector_id) MATCH SIMPLE
+    REFERENCES public.sector (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -90,7 +82,7 @@ ALTER TABLE IF EXISTS public.doctor
 
 ALTER TABLE IF EXISTS public.exam
     ADD CONSTRAINT exam_to_doctor FOREIGN KEY (doctor_id)
-    REFERENCES public.doctor (doctor_id) MATCH SIMPLE
+    REFERENCES public.doctor (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -98,7 +90,7 @@ ALTER TABLE IF EXISTS public.exam
 
 ALTER TABLE IF EXISTS public.exam
     ADD CONSTRAINT exam_to_patient FOREIGN KEY (patient_id)
-    REFERENCES public.patient (patient_id) MATCH SIMPLE
+    REFERENCES public.patient (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -106,7 +98,7 @@ ALTER TABLE IF EXISTS public.exam
 
 ALTER TABLE IF EXISTS public.patient
     ADD CONSTRAINT patient_to_admin FOREIGN KEY (admin_id)
-    REFERENCES public.admin (admin_id) MATCH SIMPLE
+    REFERENCES public.admin (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -114,7 +106,7 @@ ALTER TABLE IF EXISTS public.patient
 
 ALTER TABLE IF EXISTS public.patient
     ADD CONSTRAINT patient_to_doctor FOREIGN KEY (doctor_id)
-    REFERENCES public.doctor (doctor_id) MATCH SIMPLE
+    REFERENCES public.doctor (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -122,7 +114,7 @@ ALTER TABLE IF EXISTS public.patient
 
 ALTER TABLE IF EXISTS public.patient
     ADD CONSTRAINT patient_to_status FOREIGN KEY (status_id)
-    REFERENCES public.status (status_id) MATCH SIMPLE
+    REFERENCES public.status (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -130,7 +122,7 @@ ALTER TABLE IF EXISTS public.patient
 
 ALTER TABLE IF EXISTS public.treatment
     ADD CONSTRAINT treatment_to_nurse FOREIGN KEY (nurse_id)
-    REFERENCES public.nurse (nurse_id) MATCH SIMPLE
+    REFERENCES public.nurse (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -138,7 +130,7 @@ ALTER TABLE IF EXISTS public.treatment
 
 ALTER TABLE IF EXISTS public.treatment
     ADD CONSTRAINT treatment_to_patient FOREIGN KEY (patient_id)
-    REFERENCES public.patient (patient_id) MATCH SIMPLE
+    REFERENCES public.patient (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -146,7 +138,7 @@ ALTER TABLE IF EXISTS public.treatment
 
 ALTER TABLE IF EXISTS public.treatment
     ADD CONSTRAINT treatment_to_sector FOREIGN KEY (sector_id)
-    REFERENCES public.sector (sector_id) MATCH SIMPLE
+    REFERENCES public.sector (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
