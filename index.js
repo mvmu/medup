@@ -13,6 +13,11 @@ const server = express();
 //constant to import the functions from the DB configuration
 const {getTableData, deleteRecord, findDoctorsByCategory, findDoctors} = require("./db/db");
 
+//middleware to avoid CORS policy issues
+server.use((request, response, next) => {
+    response.header("Access-Control-Allow-Origin","*");
+    next();
+});
 
 server.get("/doctors/:category_id", async (request, response) => {
     // a variable to store all the sectors
