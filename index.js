@@ -7,16 +7,41 @@ const bodyParser = require('body-parser');
 //constant to use sessions
 const session = require('express-session');
 
+//to let it work on localhost
+const cors = require('cors');
+
 // constant server to connect it through express
 const server = express();
 
 //constant to import the functions from the DB configuration
-const {getTableData, deleteRecord, findDoctorsByCategory, findDoctors} = require("./db/db");
+const {getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment} = require("./db/db");
+
+server.use(bodyParser.urlencoded({
+    extended: true
+  }));
+server.use(bodyParser.json());
+server.use(cors());
 
 //middleware to avoid CORS policy issues
 server.use((request, response, next) => {
     response.header("Access-Control-Allow-Origin","*");
+    response.header("Accept", "application/json");
+    response.header("Content-Type", "application/json");
     next();
+});
+
+server.get("/appointments/:userId", async (request, response) => {
+    // a variable to store all the future appointments
+    let result = await getUserAppointments(request.params.userId);
+    //result is the body 
+    response.send(result);
+});
+
+server.get("/appointments/occupied/:doctorId/:date", async (request, response) => {
+    // a variable to store all the occupied time slots from a doctor and a date
+    let result = await findTimeSlotsByDoctorAndDate(request.params.doctorId, request.params.date);
+    //result is the body 
+    response.send(result);
 });
 
 server.get("/doctors/:category_id", async (request, response) => {
@@ -33,6 +58,11 @@ server.get("/categories", async (request, response) => {
     response.send(result);
 })
 
+server.get("/user/:userId", async (request, response) => {
+    let result = await getUserInfo(request.params.userId);
+    response.send(result);
+})
+
 // server.delete("/sector/:id", async (request, response) => {
 //     let isDeleted = await deleteRecord(request.params.id, "sector");
 //     if(isDeleted){
@@ -45,6 +75,16 @@ server.get("/categories", async (request, response) => {
 //         response.send({message:"ops, something went wrong while deleting"});
 //     }
 // });
+
+server.post("/appointments", async (request, response) => {
+    // a variable to store the result of saved appointment (through form)
+    let saved = await saveAppointment(request.body);
+    if(saved){
+        response.sendStatus(200);
+    }else{
+        response.sendStatus(400);
+    }
+});
 
 
 

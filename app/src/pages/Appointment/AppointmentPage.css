@@ -1,0 +1,15 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .hour {
+    flex: 1;
+    border: 1px solid black;
+    padding: 10px;
+  }

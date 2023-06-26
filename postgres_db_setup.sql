@@ -19,15 +19,15 @@ CREATE TABLE IF NOT EXISTS public.appointment
     patient_id integer NOT NULL,
     doctor_id integer NOT NULL,
     status_id integer NOT NULL,
-    date timestamp NOT NULL,
-    patient_note TEXT COLLATE pg_catalog."default" NOT NULL,
-    doctor_note TEXT COLLATE pg_catalog."default" NOT NULL
+    appointment_date date NOT NULL,
+    appointment_time time without time zone NOT NULL,
+    patient_note TEXT COLLATE pg_catalog."default",
+    doctor_note TEXT COLLATE pg_catalog."default"
 );
 
 CREATE TABLE IF NOT EXISTS public.patient
 (
     id SERIAL PRIMARY KEY,
-    status_id integer NOT NULL,
     name TEXT COLLATE pg_catalog."default" NOT NULL,
     surname TEXT COLLATE pg_catalog."default" NOT NULL,
     email TEXT COLLATE pg_catalog."default" NOT NULL,
@@ -213,17 +213,17 @@ INSERT INTO public.doctor (category_id, name, surname, medical_center, email, pa
 (1, 'David', 'Müller', 'Hauptstraße 1, 10178 Berlin, Germany', 'david.muller@doctor.com', 'password100');
 
 
-INSERT INTO public.patient (status_id, name, surname, email, password, birth_date, gender) VALUES
-(1, 'Liam', 'Smith', 'liam.smith@patient.com', 'password1', '1990-05-15', 'M'),
-(2, 'Emma', 'Johnson', 'emma.johnson@patient.com', 'password2', '1985-09-21', 'F'),
-(1, 'Noah', 'Brown', 'noah.brown@patient.com', 'password3', '1992-03-08', 'M'),
-(1, 'Olivia', 'Taylor', 'olivia.taylor@patient.com', 'password4', '1994-11-30', 'F'),
-(2, 'William', 'Wilson', 'william.wilson@patient.com', 'password5', '1988-07-12', 'M'),
-(1, 'Ava', 'Anderson', 'ava.anderson@patient.com', 'password6', '1991-02-25', NULL),
-(1, 'James', 'Thomas', 'james.thomas@patient.com', 'password7', '1993-06-19', 'M'),
-(2, 'Sophia', 'Roberts', 'sophia.roberts@patient.com', 'password8', '1987-12-03', 'F'),
-(1, 'Oliver', 'Walker', 'oliver.walker@patient.com', 'password9', '1990-08-27', 'M'),
-(1, 'Isabella', 'Harris', 'isabella.harris@patient.com', 'password10', '1995-04-17', NULL);
+INSERT INTO public.patient (name, surname, email, password, birth_date, gender) VALUES
+('Liam', 'Smith', 'liam.smith@patient.com', 'password1', '1990-05-15', 'M'),
+('Emma', 'Johnson', 'emma.johnson@patient.com', 'password2', '1985-09-21', 'F'),
+('Noah', 'Brown', 'noah.brown@patient.com', 'password3', '1992-03-08', 'M'),
+('Olivia', 'Taylor', 'olivia.taylor@patient.com', 'password4', '1994-11-30', 'F'),
+('William', 'Wilson', 'william.wilson@patient.com', 'password5', '1988-07-12', 'M'),
+('Ava', 'Anderson', 'ava.anderson@patient.com', 'password6', '1991-02-25', NULL),
+('James', 'Thomas', 'james.thomas@patient.com', 'password7', '1993-06-19', 'M'),
+('Sophia', 'Roberts', 'sophia.roberts@patient.com', 'password8', '1987-12-03', 'F'),
+('Oliver', 'Walker', 'oliver.walker@patient.com', 'password9', '1990-08-27', 'M'),
+('Isabella', 'Harris', 'isabella.harris@patient.com', 'password10', '1995-04-17', NULL);
 
 
 END;

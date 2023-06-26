@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -66,4 +66,36 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+* {
+  margin: 0;
+  padding: 0;  
 }
+
+:root{
+  font-family: 'Poppins', sans-serif;
+  /* color variables */
+  --color-primary100: #0335B4;
+  --color-primary30: #C1D2FE;
+  --color-primary40: #8FAEFC;
+  --color-primary50: #648EF9;
+  --color-primary60: #4375F4;
+  --color-primary70: #2960EC;
+  --color-primary80: #174FDF;
+  --color-primary90: #0A41CC;
+  --color-utility-danger: #E62E2E;
+  --color-utility-info: #2EA2E6;
+  --color-utility-warning: #EDA12F;
+  --color-utility-success: #3DCC87;
+  --color-black: #292B33;
+  --bg-custom: #E8EEFF;
+}
+
+body {
+  text-align: center;
+  scroll-behavior: smooth;
+  background-color: var(--bg-custom);
+  color: var(--color-black);
+}
+
