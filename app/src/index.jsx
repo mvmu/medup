@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/appointment",
-    element: <AppointmentPage loggedUserId={mockUserId} passedCategoryId={null} passedDoctorId={null} />
+    element: <AppointmentPage loggedUserId={mockUserId} />
   }
 ]);
 
