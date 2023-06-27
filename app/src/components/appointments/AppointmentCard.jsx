@@ -12,7 +12,7 @@ const AppointmentCard = ({appointment}) => {
                 <h4 className="card-header">{appointment.category}</h4>
                 <div className="card-body">
                     <h5 className="card-title">{appointment.doctor_name} {appointment.doctor_surname}</h5>
-                    {/* clean the date and time format with slice method */}
+                    {/* clean the date and time format with slice method, to get just the date and time */}
                     <p className="card-text">{appointment.appointment_date.slice(0,10)} {appointment.appointment_time.slice(0,5)}</p>
                     <div className="container rounded" style={{backgroundColor: defineColor(appointment.status)}}>
                         {appointment.status}
@@ -24,7 +24,7 @@ const AppointmentCard = ({appointment}) => {
     );
 };
 
-// TODO RETURN WITH ICONS
+// return different colors depending on the status with a switch-case
 function defineColor(status) {
     switch (status) {
         case "Completed":
@@ -37,7 +37,7 @@ function defineColor(status) {
             return "white";
     }
 }
-
+// return the right icon depending on the status with a switch-case
 function defineIcon(status) {
     switch (status) {
         case "Completed":

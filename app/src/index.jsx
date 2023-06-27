@@ -1,12 +1,12 @@
 //import React
 import React from 'react'
-//impoer React DOM
+//import React DOM
 import ReactDOM from 'react-dom/client';
 //import bootstrap framework
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import the stylesheet of index
 import './index.css'
-//import pages:
+//import pages
 import Home from './pages/Home/Home/';
 import SearchPage from './pages/Search/SearchPage';
 import AppointmentPage from './pages/Appointment/AppointmentPage';
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/appointment",
-    element: <AppointmentPage loggedUserId={mockUserId} />
+    element: <AppointmentPage loggedUserId={mockUserId} passedCategoryId={null} passedDoctorId={null} />
   }
 ]);
 

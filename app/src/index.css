@@ -74,7 +74,6 @@ button:focus-visible {
 }
 
 :root{
-  font-family: 'Poppins', sans-serif;
   /* color variables */
   --color-primary100: #0335B4;
   --color-primary30: #C1D2FE;
@@ -93,6 +92,7 @@ button:focus-visible {
 }
 
 body {
+  font-family: 'Poppins', sans-serif;
   text-align: center;
   scroll-behavior: smooth;
   background-color: var(--bg-custom);

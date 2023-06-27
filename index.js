@@ -16,6 +16,7 @@ const server = express();
 //constant to import the functions from the DB configuration
 const {getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment} = require("./db/db");
 
+// USE MIDDLEWARE
 server.use(bodyParser.urlencoded({
     extended: true
   }));
@@ -30,6 +31,7 @@ server.use((request, response, next) => {
     next();
 });
 
+// GET MIDDLEWARE
 server.get("/appointments/:userId", async (request, response) => {
     // a variable to store all the future appointments
     let result = await getUserAppointments(request.params.userId);
@@ -44,8 +46,15 @@ server.get("/appointments/occupied/:doctorId/:date", async (request, response) =
     response.send(result);
 });
 
+server.get("/doctors", async (request, response) => {
+    // a variable to store all the doctors
+    let result = await findDoctors();
+    //result is the body 
+    response.send(result);
+});
+
 server.get("/doctors/:category_id", async (request, response) => {
-    // a variable to store all the sectors
+    // a variable to store all the doctors, sorted by category
     let result = await findDoctorsByCategory(request.params.category_id);
     //result is the body 
     response.send(result);
@@ -76,6 +85,7 @@ server.get("/user/:userId", async (request, response) => {
 //     }
 // });
 
+// POST MIDDLEWARE
 server.post("/appointments", async (request, response) => {
     // a variable to store the result of saved appointment (through form)
     let saved = await saveAppointment(request.body);

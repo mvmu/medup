@@ -1,10 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import "./AppointmentPage.css";
-
+// add passedDoctorId and passedCategoryId as optional parameters, in case we land to this page from the search page/doctor card button
 const AppointmentPage = ({loggedUserId}) => {
+
+    //use location is required in case we reach this page from the search doctors page. 
+    //In that case the DoctorCard passes the selected doctorId and categoryId in the state during redirect (line: 11 DoctorsCard.jsx)
+    const location = useLocation();
+    const passedCategoryId = location !== null && location.state != null ? location.state.categoryId : null;
+    const passedDoctorId = location !== null && location.state != null ? location.state.doctorId : null;
 
     //a react component to navigate throught the pages defined in the router (see index.jsx)
     const navigate = useNavigate();
@@ -15,8 +21,8 @@ const AppointmentPage = ({loggedUserId}) => {
     const [doctorAppointmentsSlots, setDoctorAppointmentsSlots] = useState([]);
 
     //form attributes variables
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(passedCategoryId || null);
+    const [selectedDoctor, setSelectedDoctor] = useState(passedDoctorId || null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [patientNote, setPatientNote] = useState("");
@@ -27,17 +33,18 @@ const AppointmentPage = ({loggedUserId}) => {
     //hours to book the appointment, from 9AM to 8PM divided by rows
     const hoursGrid = generateTimeGrid();
 
+    // generate a grid putting data into an array
     function generateTimeGrid() {
         const hours = [];
         const rows = [];
 
-        // Generate hours from 09:00 AM to 08:00 PM
+        // generate hours from 09:00 AM to 08:00 PM
         for (let hour = 9; hour <= 20; hour++) {
             const date = new Date();
             date.setHours(hour, 0, 0); // Set the hour and minutes in the Date object
             const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             hours.push(formattedTime);
-        }
+        }// choose how many elements(hours) we want to show in each row
           const elementsPerRow = 3;
           for (let i = 0; i < hours.length; i += elementsPerRow) {
             rows.push(hours.slice(i, i + elementsPerRow));
@@ -54,9 +61,10 @@ const AppointmentPage = ({loggedUserId}) => {
             // ...fetch all the doctors from the selected category
             getDoctorsByCategory(selectedCategory);
             };
-
+        // if category+doctor+date has been selected...
         if (selectedDoctor && selectedDate) {
-            // need to convert the date object into a locale string yyyy-mm-dd format with toLocaleString()
+            // need to show free time slots as available. 
+            // convert the date object into a locale string yyyy-mm-dd format with toLocaleString()
             getOccupiedSlots(selectedDoctor, selectedDate.toLocaleString());
         }
         // if appointmentSaved is true set a timeout to redirect to the homepage in 3 secs
@@ -67,7 +75,7 @@ const AppointmentPage = ({loggedUserId}) => {
         }
         }, [selectedCategory, selectedDoctor, selectedDate, appointmentSaved])
 
-    //a function to fetch categories from db using middleware url
+    // a function to fetch categories from db using middleware url
     const getCategories = async () => {
         try {
           const response = await fetch("http://localhost:4000/categories");
@@ -82,11 +90,11 @@ const AppointmentPage = ({loggedUserId}) => {
         }
     }
 
-    //a function to fetch categories from db using middleware url
+    // a function to fetch categories from DB using middleware url
     const getDoctorsByCategory = async (categoryId) => {
             try {
             const response = await fetch(`http://localhost:4000/doctors/${categoryId}`);
-            // the response from the db will be stored into the constant data
+            // the response from the DB will be stored into the constant data
             const data = await response.json();
             //apply the setter function to the result
             setDoctorsByCategory(data);
@@ -97,7 +105,7 @@ const AppointmentPage = ({loggedUserId}) => {
             }
     }
 
-    //a function to fetch time slots from db 
+    //a function to fetch occupied time slots from DB 
     const getOccupiedSlots = async (doctorId, date) => {
         try {
         const response = await fetch(`http://localhost:4000/appointments/occupied/${doctorId}/${date}`);
@@ -111,9 +119,10 @@ const AppointmentPage = ({loggedUserId}) => {
             console.log(error)
         }
     }
-    // a function to send all the data from the form, only the info we want to store
+    // a function to send all the data from the form, just the info we want to store
     async function sendForm() {
         try {
+            // fetch the url
             const response = await fetch("http://localhost:4000/appointments", {
                 method : "POST",
                 headers: {
@@ -147,7 +156,7 @@ const AppointmentPage = ({loggedUserId}) => {
                         <option value={null}>Select category</option>
                         {/* a map function to check every category and add it to the dropdown as an option, with ID as both key and value props and value as the visible text */}
                         {categories.map(category => 
-                                    <option key={category.id} value={category.id}>{category.value}</option>
+                                    <option key={category.id} selected={passedCategoryId === category.id} value={category.id}>{category.value}</option>
                                 )}
                     </select>
                 </div>
@@ -158,7 +167,7 @@ const AppointmentPage = ({loggedUserId}) => {
                         <option value={null}>Select doctor</option>
                         {/* a map function to check every category and add it to the dropdown as an option, with ID as both key and value props and value as the visible text */}
                         {doctorsByCategory.map(doctor => 
-                                        <option key={doctor.id} value={doctor.id}>{doctor.name} {doctor.surname}</option>
+                                        <option key={doctor.id} selected={passedDoctorId === doctor.id} value={doctor.id}>{doctor.name} {doctor.surname}</option>
                         )}
                     </select>
                 </div>
@@ -168,10 +177,19 @@ const AppointmentPage = ({loggedUserId}) => {
                 <div className="row">
                     <div className="input-group">
                         <div className="input-group-prepend">
-                            <div className="row">
+                            <div className="row p-2">
                                 {hoursGrid.map((row) => row.map((hour, index) => 
-                                    <div className="col-md-4">
-                                        <button disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} value={hour} id={index} key={index} className="btn btn-outline-secondary" type="button" onClick={e => setSelectedTime(e.target.value)}>{hour}</button>
+                                    <div className="col-md-4 p-2">
+                                        <button 
+                                        type="button"
+                                        value={hour} 
+                                        id={index} 
+                                        key={index}
+                                        disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
+                                        className={selectedTime === hour ? "btn btn-primary" : "btn btn-secondary"} 
+                                        onClick={e => setSelectedTime(e.target.value)}>
+                                            {hour}
+                                        </button>
                                     </div>))}
                             </div>
                         </div>

@@ -154,11 +154,13 @@ async function findDoctorsByCategory(category_id){
     }
 }
 
+// this function is specific for getting all the doctors info except the passwords
 async function findDoctors(){
     let sql = connect();
 
     try{
-        let data = await sql `SELECT id, name, surname, email, medical_center FROM doctor`;
+        let data = await sql `SELECT doctor.id as id, name, surname, email, medical_center, category.value as category_name, category.id as category_id FROM doctor
+                            INNER JOIN category ON doctor.category_id = category.id`;
 
         return data;
 

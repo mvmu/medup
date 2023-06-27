@@ -1,8 +1,9 @@
 #userWelcome {
-    /* width: 100vw;
-    margin-left: 0;
-    margin-left: 0; */
+    height: 27vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background: linear-gradient(45deg, #0335B4 0%, #2960EC 100%);
     color: white;
-    border-radius: 0 0 1em 1em;
+    border-radius: 0 0 1.5em 1.5em;
 }
