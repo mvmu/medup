@@ -4,37 +4,60 @@ const express = require('express');
 //constant to use body parser(objects)
 const bodyParser = require('body-parser');
 
-//constant to use sessions
+//constant to enable sessions
 const session = require('express-session');
 
-//to let it work on localhost
+//constant to let it work on localhost
 const cors = require('cors');
+
+//constant to use read cookies sent from the app for the session
+const cookieParser = require('cookie-parser');
 
 // constant server to connect it through express
 const server = express();
 
 //constant to import the functions from the DB configuration
-const {getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment} = require("./db/db");
+const {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment} = require("./db/db");
+
+const SECRET = "cei-final-project";
 
 // USE MIDDLEWARE
 server.use(bodyParser.urlencoded({
     extended: true
   }));
 server.use(bodyParser.json());
-server.use(cors());
+
+server.use(cookieParser(SECRET));
 
 //middleware to avoid CORS policy issues
-server.use((request, response, next) => {
-    response.header("Access-Control-Allow-Origin","*");
-    response.header("Accept", "application/json");
-    response.header("Content-Type", "application/json");
-    next();
+server.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
+
+// middleware to store session, using express-session library
+server.use(session({ 
+    secret : SECRET,
+    resave : true,
+    saveUninitialized : true,
+    cookie: {
+        secure: false
+    }
+}));
+
+// GET MIDDLEWARES
+// middleware to get the logged user id
+server.get("/getUserSession", (request,response) => { 
+    if(request.session.sessionUser) {
+        response.send(request.session.sessionUser);
+    } else {
+        response.sendStatus(401);
+    }
 });
 
-// GET MIDDLEWARE
-server.get("/appointments/:userId", async (request, response) => {
+server.get("/appointments", async (request, response) => {
     // a variable to store all the future appointments
-    let result = await getUserAppointments(request.params.userId);
+    let result = await getUserAppointments(request.session.sessionUser.userId);
     //result is the body 
     response.send(result);
 });
@@ -67,9 +90,13 @@ server.get("/categories", async (request, response) => {
     response.send(result);
 })
 
-server.get("/user/:userId", async (request, response) => {
-    let result = await getUserInfo(request.params.userId);
+server.get("/user", async (request, response) => {
+    let result = await getUserInfo(request.session.sessionUser);
     response.send(result);
+})
+
+server.get("/logout", (request, response) => {
+    request.session.destroy(() => response.sendStatus(200));
 })
 
 // server.delete("/sector/:id", async (request, response) => {
@@ -88,7 +115,7 @@ server.get("/user/:userId", async (request, response) => {
 // POST MIDDLEWARE
 server.post("/appointments", async (request, response) => {
     // a variable to store the result of saved appointment (through form)
-    let saved = await saveAppointment(request.body);
+    let saved = await saveAppointment(request.body, request.session.sessionUser.userId);
     if(saved){
         response.sendStatus(200);
     }else{
@@ -96,6 +123,19 @@ server.post("/appointments", async (request, response) => {
     }
 });
 
+server.post("/login", async (request, response) => {
+    const isDoctor = request.body.isDoctor;
+    const user = await logIn(request.body);
+    const userId = user.id;
+    if(userId){
+        console.log(`user with id ${userId} logged successfully`);
+        // store the logged user ID into the session
+        request.session.sessionUser = {userId, isDoctor};
+        response.sendStatus(200);
+    }else {
+        response.sendStatus(401)
+    }
+} );
 
 
 server.listen(4000);

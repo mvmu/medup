@@ -2,8 +2,10 @@ import React from "react";
 import "./SearchPage.css";
 import { useState, useEffect } from "react";
 import DoctorsList from "../../components/doctors/DoctorsList";
+import SearchIcon from '../../assets/usability/search.svg'
 
-const SearchPage = ({ loggedUserId }) => {
+
+const SearchPage = () => {
   // the constants to get and set throught useState
   const [doctors, setDoctors] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -61,13 +63,20 @@ const SearchPage = ({ loggedUserId }) => {
             <h2>Find doctors by name or surname</h2>
         </div>
         <div className="row p-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Type something"
-              value={textInserted}
-              onChange={(e) => setTextInserted(e.target.value)}
-            />
+          <div className="form-group has-search">
+            <div className="input-group-text border-0" id="searchBar">
+              <span>
+               <img className="m-3" src={SearchIcon} alt="search icon" />
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Type something"
+                value={textInserted}
+                onChange={(e) => setTextInserted(e.target.value)}
+              /> 
+            </div>    
+          </div>
         </div>
         <div className="row pt-3">
             <h2>Search by category</h2>
@@ -79,7 +88,7 @@ const SearchPage = ({ loggedUserId }) => {
                                             value={category.id} 
                                             //compare the button value with the actual selected one (needed to do a toString since the category.id variable is an integer)
                                             // and applies the btn-primary class if they match. Otherwise it applies the btn-secondary
-                                            className={category.id === categoryInserted ? "btn btn-primary m-1" : "btn btn-secondary m-1"}
+                                            className={category.id === categoryInserted ? "btn btn-primary m-1" : "btn btn-light m-1"}
                                             onClick={onButtonClick}>
                                                 {category.value}
                                             </button>)}
@@ -94,7 +103,7 @@ const SearchPage = ({ loggedUserId }) => {
             </div>
         </div>
         <div className="row">
-          <DoctorsList doctors={filteredDoctors} userId={loggedUserId} />
+          <DoctorsList doctors={filteredDoctors} />
         </div>
       </div>
     </>

@@ -1,8 +1,26 @@
-import { useEffect, useState } from 'react'
+import { NavLink as Link } from 'react-router-dom';
 import './NavBar.css'
 import logo from '../../assets/brand/logo.svg'
 
+
 function NavBar() {
+
+
+  async function logout() {
+    try {
+        console.log("doing logout!");
+        const response = await fetch("http://localhost:4000/logout", {
+            method : "GET",
+            credentials: 'include'
+          });
+
+        if(response.status === 200){
+            window.location.reload(false);
+        }
+    }catch(error){
+        console.error(error);
+    }
+}
 
   return (
     <>
@@ -18,14 +36,20 @@ function NavBar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/">Home</a>
+              {/* Link instead of simple <a href > element because of React framework */}
+              <Link className="nav-link" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/search">Search</a>
+              <Link className="nav-link" aria-current="page" to="/search">Search</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" aria-current="page" to="/appointment">Get appointment</Link>
             </li>
             {/* MOVE TO THE RIGHT SIDE OF THE NAVBAR */}
             <li className="nav-item">
-              <a className="nav-link" href="/calendar">Log in</a>
+              <button className="btn btn-danger" onClick={logout}>
+                Log out
+              </button>
             </li>
         {/* <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

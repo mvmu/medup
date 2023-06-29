@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import "./AppointmentPage.css";
 // add passedDoctorId and passedCategoryId as optional parameters, in case we land to this page from the search page/doctor card button
-const AppointmentPage = ({loggedUserId}) => {
+const AppointmentPage = () => {
 
     //use location is required in case we reach this page from the search doctors page. 
     //In that case the DoctorCard passes the selected doctorId and categoryId in the state during redirect (line: 11 DoctorsCard.jsx)
@@ -125,11 +125,12 @@ const AppointmentPage = ({loggedUserId}) => {
             // fetch the url
             const response = await fetch("http://localhost:4000/appointments", {
                 method : "POST",
+                // if this key is not passed with include as a value, the session won't be recognized in the backend
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                   },
                 body: JSON.stringify({
-                    patient_id: loggedUserId,
                     doctor_id: selectedDoctor,
                     appointment_date: selectedDate,
                     appointment_time: selectedTime,

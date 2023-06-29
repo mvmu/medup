@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 import AppointmentCard from "./AppointmentCard";
 import "./AppointmentsList.css";
 
-const AppointmentsList = ({userId}) => {
+const AppointmentsList = () => {
 
     const [appointments, setAppointments] = useState([]);
 
   const getAppointments = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/appointments/${userId}`);
+      const response = await fetch(`http://localhost:4000/appointments`, {
+        method : "GET",
+        credentials: 'include',
+      });
       const data = await response.json();
       setAppointments(data);
     }

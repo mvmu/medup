@@ -11,6 +11,23 @@ function connect(){
 }
 // All the functions will be managed in an asyncronous way, as it is a DB connection
 
+//a function to login
+async function logIn({email,password,isDoctor}) {
+    let sql = connect();
+    try {
+        // variable to identify which table must be used to login, depending on the user type (doctor or patient)
+        let tableToQuery = isDoctor ? "doctor" : "patient";
+        // store the query result (id) into a variable
+        let userId = await sql`SELECT id from ${sql(tableToQuery)} WHERE email = ${email} AND password = ${password}`;
+        // return the variable (id)
+        return userId[0];
+    } catch(error) {
+        console.log("an error occurred trying to fetch the id");
+        return null;
+    }
+
+}
+
 // a function to fetch all the data from a table given as a parameter, general function to apply in many cases:
 // - search Doctors 
 // - search Appointments
@@ -44,12 +61,12 @@ async function getUserAppointments(userId) {
         }
 }
 
-async function getUserInfo(userId) {
+async function getUserInfo(sessionUser) {
     let sql = connect();
-
         try{
-            //data variable containing the query result. Postgres library requires the following syntax to pass parameters
-            let data = await sql`SELECT name, surname, email, birth_date, gender FROM patient WHERE id = ${userId}`;
+            //data variable containing a query result depending on the isDoctor boolean variable value(if is doctor, fetch doctor info | If not, fetch patient info). 
+            let data = sessionUser.isDoctor ? await sql`SELECT name, surname, email, medical_center FROM doctor WHERE id = ${sessionUser.userId}`
+            : await sql`SELECT name, surname, email, birth_date, gender FROM patient WHERE id = ${sessionUser.userId}`;
 
             //the query always return an array, but in this case we'll always have a single result. So we return the first and only element of the array
             return data[0];
@@ -72,7 +89,7 @@ async function getTableData(tableName){
         let sql = connect();
 
         try{
-            //data variable containing the query result. Postgres library requires the following syntax to pass parameters
+            //data variable containing the query result. Postgres library requires the following syntax to pass parameters (${sql(dynamic value)})
             let data = await sql`SELECT * FROM ${sql(tableName)}`;
 
             return data;
@@ -95,7 +112,7 @@ async function deleteRecord(id, tableName){
     let sql = connect();
 
     try{
-        // 
+        // a variable with result as a data to delete. Postgres library requires the following syntax to pass parameters
         let result = await sql`DELETE from ${sql(tableName)} WHERE id = ${id}`;
 
         // check if the row has been deleted
@@ -115,6 +132,7 @@ async function findTimeSlotsByDoctorAndDate(doctor_id, date){
     let sql = connect();
 
     try{
+        //a variable containing the query result as data
         let data = await sql `SELECT appointment_time FROM appointment WHERE doctor_id = ${doctor_id} AND appointment_date = ${date}`;
 
         // convert the array results of objects into an array of strings, cutting the time to return just hour and minute (hh:mm)
@@ -137,6 +155,7 @@ async function findDoctorsByCategory(category_id){
     let sql = connect();
 
     try{
+        //a variable containing the query result as data
         let data = await sql `SELECT id, name, surname, email, medical_center FROM doctor WHERE category_id = ${category_id}`;
 
         return data;
@@ -177,13 +196,13 @@ async function findDoctors(){
     }
 }
 // data is the response.body from the Frontend
-async function saveAppointment(data){
+async function saveAppointment(data,userId){
     let sql = connect();
     
     try{
-        //all the appointments are saved with status id = 1 (pending)
+        //all the appointments are saved as result, with status id = 1 (pending)
         let result = await sql`INSERT INTO appointment (patient_id, doctor_id, status_id, appointment_date, appointment_time, patient_note) 
-                                VALUES (${data.patient_id},${data.doctor_id},1,${data.appointment_date}, ${data.appointment_time}, ${data.patient_note})`;
+                                VALUES (${userId},${data.doctor_id},1,${data.appointment_date}, ${data.appointment_time}, ${data.patient_note})`;
 
         // check if the appointment has been added with a boolean
         return result.count > 0;
@@ -201,4 +220,4 @@ async function saveAppointment(data){
     }
 }
 
-module.exports = {getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment};
+module.exports = {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment};
