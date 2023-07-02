@@ -5,21 +5,21 @@ import "./AppointmentPage.css";
 // add passedDoctorId and passedCategoryId as optional parameters, in case we land to this page from the search page/doctor card button
 const AppointmentPage = () => {
 
-    //use location is required in case we reach this page from the search doctors page. 
-    //In that case the DoctorCard passes the selected doctorId and categoryId in the state during redirect (line: 11 DoctorsCard.jsx)
+    // useLocation is required in case we reach this page from the search doctors page. 
+    // In that case the DoctorCard passes the selected doctorId and categoryId in the state during redirect (line: 11 DoctorsCard.jsx)
     const location = useLocation();
     const passedCategoryId = location !== null && location.state != null ? location.state.categoryId : null;
     const passedDoctorId = location !== null && location.state != null ? location.state.doctorId : null;
 
-    //a react component to navigate throught the pages defined in the router (see index.jsx)
+    // a react component to navigate throught the pages defined in the router (see index.jsx)
     const navigate = useNavigate();
 
-    //data to fetch
+    // data to fetch
     const [categories, setCategories] = useState([]);
     const [doctorsByCategory, setDoctorsByCategory] = useState([]);
     const [doctorAppointmentsSlots, setDoctorAppointmentsSlots] = useState([]);
 
-    //form attributes variables
+    // form attributes variables
     const [selectedCategory, setSelectedCategory] = useState(passedCategoryId || null);
     const [selectedDoctor, setSelectedDoctor] = useState(passedDoctorId || null);
     const [selectedDate, setSelectedDate] = useState(null);
@@ -29,7 +29,7 @@ const AppointmentPage = () => {
     const [appointmentSaved, setAppointmentSaved] = useState(false);
 
 
-    //hours to book the appointment, from 9AM to 8PM divided by rows
+    // hours to book the appointment, from 9AM to 8PM divided by rows
     const hoursGrid = generateTimeGrid();
 
     // generate a grid putting data into an array
@@ -37,7 +37,7 @@ const AppointmentPage = () => {
         const hours = [];
         const rows = [];
 
-        // generate hours from 09:00 AM to 08:00 PM
+        // generate hours from 9:00 AM to 8:00 PM
         for (let hour = 9; hour <= 20; hour++) {
             const date = new Date();
             date.setHours(hour, 0, 0); // Set the hour and minutes in the Date object
@@ -104,7 +104,7 @@ const AppointmentPage = () => {
             }
     }
 
-    //a function to fetch occupied time slots from DB 
+    // a function to fetch occupied time slots from DB 
     const getOccupiedSlots = async (doctorId, date) => {
         try {
         const response = await fetch(`http://localhost:4000/appointments/occupied/${doctorId}/${date}`);
@@ -149,7 +149,7 @@ const AppointmentPage = () => {
       return (
         <>
         <div className="container">
-            {/* a new div to display the page title and a brief explanation input */}
+            {/* a new div to display the page title and a brief explanation */}
             <div className="row">
                 <h2 className="pt-5">Find and book an appointment</h2>
                 <h5>Then, you just have to wait you doctor's confirmation</h5>

@@ -38,6 +38,8 @@ async function getUserAppointments(userId, isDoctor) {
         try{
             //data variable containing the query result. Postgres library requires the following syntax to pass parameters
             let data = await sql`SELECT 
+            appointment.id,
+            doctor.id as doctor_id,
             doctor.name as doctor_name, 
             doctor.surname as doctor_surname, 
             doctor.medical_center, 
@@ -120,7 +122,7 @@ async function getTableData(tableName){
     };
 
 //this function returns a boolean. True: succesfully deleted | False: otherwise
-async function deleteRecord(id, tableName){
+async function deleteRecord(tableName, id){
     let sql = connect();
 
     try{
@@ -232,4 +234,48 @@ async function saveAppointment(data,userId){
     }
 }
 
-module.exports = {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment};
+async function updateAppointment(data) {
+    let sql = connect();
+
+    try {
+        let result = await sql`UPDATE appointment
+                                SET status_id = ${data.new_status_id}, appointment_date = ${data.new_date}, appointment_time = ${data.new_time}, patient_note = ${data.patient_note}, doctor_note = ${data.doctor_note}
+                                WHERE id = ${data.appointment_id}`
+
+        // check if the appointment has been updated with a boolean
+        return result.count > 0;
+    } catch(error) {
+        // in case of error, print a log message
+        console.log('an error occurred trying to update the appointment', error);
+
+        // return false boolean if something went wrong (because the return type of the function is a boolean)
+        return false;
+    } finally {
+        //close the connection
+        sql.end(); 
+    }
+}
+
+async function cancelAppointment(id) {
+    let sql = connect();
+
+    try {
+        let result = await sql`UPDATE appointment SET status_id = 3 
+        WHERE id = ${id}`
+
+        // check if the appointment has been updated with a boolean
+        return result.count > 0;
+    } catch(error) {
+        // in case of error, print a log message
+        console.log('an error occurred trying to update the appointment status to cancelled', error);
+
+        // return false boolean if something went wrong (because the return type of the function is a boolean)
+        return false;
+    } finally {
+        //close the connection
+        sql.end(); 
+    }
+}
+
+
+module.exports = {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, cancelAppointment};

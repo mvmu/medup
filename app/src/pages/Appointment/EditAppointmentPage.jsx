@@ -1,7 +1,9 @@
 import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import "./EditAppointmentPage.css";
-import AppointmentCard from "../../components/appointments/AppointmentCard";
+import EditAppointmentPanel from "../../components/appointments/EditAppointmentPanel.jsx";
+import arrowLeftIcon from '../../assets/usability/arrow-left-circle.svg';
+
 
 const EditAppointmentPage = () => {
     // a constant to read the state during navigation
@@ -16,9 +18,29 @@ const EditAppointmentPage = () => {
         navigate("/");
     }
 
+ 
     return (
         <>
-            {appointment ? <AppointmentCard appointment={appointment} isDoctor={isDoctor}/> : 
+        <div className="container-fluid">
+            <div className="container-fluid pt-5">
+                <div className="row">
+                    <button
+                        type="button"
+                        className="btn btn-primary col-md-1"
+                        id="buttonBack"
+                        onClick={goBack}
+                        >
+                        <img src={arrowLeftIcon} className="text-white p-2" alt="arrow left"/>
+                            Home
+                    </button>
+                </div>
+                <div className="row pt-2">
+                    <h2>Edit appointment panel</h2>
+                </div>
+            </div>
+                
+        </div>
+            {appointment ? <EditAppointmentPanel appointment={appointment} isDoctor={isDoctor}/> : 
             
             <div className="container p-5">
                 <div className="row">
@@ -28,7 +50,7 @@ const EditAppointmentPage = () => {
                             <button
                                 className="btn btn-primary w-25"
                                 onClick={goBack}
-                            >
+                                >
                             Home
                             </button>
                         </div>

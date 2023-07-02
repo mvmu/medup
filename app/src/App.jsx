@@ -5,7 +5,7 @@ import './App.css';
 import Home from './pages/Home/Home/';
 import SearchPage from './pages/Search/SearchPage';
 import AppointmentPage from './pages/Appointment/AppointmentPage';
-import EditAppintmentPage from './pages/Appointment/EditAppintmentPage';
+import EditAppointmentPage from './pages/Appointment/EditAppointmentPage';
 import Login from './pages/Login/Login'
 import NavBar from './components/navbar/NavBar';
 //import router 
@@ -50,13 +50,13 @@ const App = () => {
             { loggedUser.isDoctor ? 
                 <Routes>
                     <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
-                    <Route path="/edit" element={<EditAppintmentPage />} />
+                    <Route path="/edit" element={<EditAppointmentPage />} />
                     <Route path="/appointment" element={<AppointmentPage />} />
                 </Routes>
             :
             <Routes>
             <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
-            <Route path="/edit" element={<EditAppintmentPage />} />
+            <Route path="/edit" element={<EditAppointmentPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/appointment" element={<AppointmentPage />} />
             </Routes>

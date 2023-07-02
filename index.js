@@ -17,9 +17,10 @@ const cookieParser = require('cookie-parser');
 const server = express();
 
 //constant to import the functions from the DB configuration
-const {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment} = require("./db/db");
+const {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, cancelAppointment} = require("./db/db");
 
 const SECRET = "cei-final-project";
+
 
 // USE MIDDLEWARE
 server.use(bodyParser.urlencoded({
@@ -131,7 +132,30 @@ server.post("/login", async (request, response) => {
     }else {
         response.sendStatus(401)
     }
-} );
+
+});
+
+server.put("/appointment/update", async (request, response) => {
+    // a variable to identify if the appointment has been updated or not
+    let updated = await updateAppointment(request.body);
+    if(updated){
+        response.sendStatus(200);
+    }else{
+        response.sendStatus(400);
+    }
+})
+
+server.put("/appointment/cancel/:appointment_id", async (request, response) => {
+    // a variable to identify if the appointment has been updated or not
+    let cancelled = await cancelAppointment(request.params.appointment_id);
+    if(cancelled){
+        response.sendStatus(200);
+    }else{
+        // send bad request status (400)
+        response.sendStatus(400);
+    }
+})
+
 
 
 server.listen(4000);

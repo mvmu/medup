@@ -4,7 +4,7 @@ import './NavBar.css'
 import logo from '../../assets/brand/logo.svg'
 import logoName from '../../assets/brand/MEDUP.svg'
 
-
+//TODO. remove navigate, is no longer needed
 function NavBar({isDoctor}) {
 
   const navigate = useNavigate();
@@ -31,10 +31,10 @@ function NavBar({isDoctor}) {
     <>
     <nav className="navbar navbar-expand-lg navbar-light shadow-lg px-3" id="navBar">
       <div className="container-fluid">
-        <a className="navbar-brand pr-2 d-flex justify-content-between" href="/">
+        <Link className="navbar-brand pr-2 d-flex justify-content-between" to="/">
           <img src={logoName} alt="Medup"/>
           <img src={logo} alt="Medup"/>
-        </a>
+        </Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -55,7 +55,6 @@ function NavBar({isDoctor}) {
                 <Link className="nav-link" aria-current="page" to="/appointment">Get appointment</Link>
               </li>
             </div>
-            {/* MOVE TO THE RIGHT SIDE OF THE NAVBAR */}
             <div>
               <li className="nav-item">
                 <button className="btn btn-danger" onClick={logout}>
