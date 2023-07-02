@@ -3,8 +3,6 @@ import { useState } from "react";
 import doctor from '../../assets/usability/doctor.svg';
 import patient from '../../assets/usability/user.svg';
 import bg from '../../assets/brand/bg-login.svg';
-import logo from '../../assets/brand/logo.svg'
-import logoName from '../../assets/brand/MEDUP.svg'
 import title from '../../assets/brand/title.svg'
 
 

@@ -64,10 +64,14 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                     <h5 className="card-title">{subtitle}</h5>
                     {/* clean the date and time format with slice method, to get just the date and time */}
                     <p className="card-text">{dateTime}</p>
-                    <div className="container rounded" style={{backgroundColor: defineColor(status)}}>
-                        {status}
-                        <img className="mx-2 p-2" src={defineIcon(status)} alt="status icon" />
-                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-md-3">
+                            <div className="container rounded" style={{backgroundColor: defineColor(status)}}>
+                                {status}
+                                <img className="mx-2 p-2" src={defineIcon(status)} alt="status icon" />
+                            </div>
+                        </div>
+                    </div>                 
                 </div>
             </div>
         </>
