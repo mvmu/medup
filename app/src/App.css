@@ -99,3 +99,14 @@ body {
   color: var(--color-black);
 }
 
+.glassmorphic {
+  background: hsla(0, 0%, 100%, 0.55);
+  backdrop-filter: blur(30px);
+  border: none;
+} 
+    
+#cardTitle {
+  background-color: var(--color-primary30);
+  color: var(--color-black);
+}
+

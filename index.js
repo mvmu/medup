@@ -10,7 +10,7 @@ const session = require('express-session');
 //constant to let it work on localhost
 const cors = require('cors');
 
-//constant to use read cookies sent from the app for the session
+//constant to use read + cookies sent from the app for the session
 const cookieParser = require('cookie-parser');
 
 // constant server to connect it through express
@@ -55,9 +55,16 @@ server.get("/getUserSession", (request,response) => {
     }
 });
 
-server.get("/appointments", async (request, response) => {
+server.get("/doctor/appointments", async (request, response) => {
     // a variable to store all the future appointments
-    let result = await getUserAppointments(request.session.sessionUser.userId);
+    let result = await getUserAppointments(request.session.sessionUser.userId, true);
+    //result is the body 
+    response.send(result);
+});
+
+server.get("/patient/appointments", async (request, response) => {
+    // a variable to store all the future appointments
+    let result = await getUserAppointments(request.session.sessionUser.userId, false);
     //result is the body 
     response.send(result);
 });
@@ -96,21 +103,10 @@ server.get("/user", async (request, response) => {
 })
 
 server.get("/logout", (request, response) => {
-    request.session.destroy(() => response.sendStatus(200));
+    console.log("Logging out user:", request.session.sessionUser)
+    request.session.destroy();
+    response.sendStatus(200);
 })
-
-// server.delete("/sector/:id", async (request, response) => {
-//     let isDeleted = await deleteRecord(request.params.id, "sector");
-//     if(isDeleted){
-//         response.status(200);
-//         // return an object with a descriptive message, important to use in Front
-//         response.send({message:"sector succesfully deleted"});
-//     }else{
-//         // send the 404 error (not found)
-//         response.status(404);
-//         response.send({message:"ops, something went wrong while deleting"});
-//     }
-// });
 
 // POST MIDDLEWARE
 server.post("/appointments", async (request, response) => {
@@ -126,8 +122,8 @@ server.post("/appointments", async (request, response) => {
 server.post("/login", async (request, response) => {
     const isDoctor = request.body.isDoctor;
     const user = await logIn(request.body);
-    const userId = user.id;
-    if(userId){
+    if(user){
+        const userId = user.id;
         console.log(`user with id ${userId} logged successfully`);
         // store the logged user ID into the session
         request.session.sessionUser = {userId, isDoctor};

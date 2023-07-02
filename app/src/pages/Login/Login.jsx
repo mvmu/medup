@@ -1,5 +1,13 @@
 import React from "react";
 import { useState } from "react";
+import doctor from '../../assets/usability/doctor.svg';
+import patient from '../../assets/usability/user.svg';
+import bg from '../../assets/brand/bg-login.svg';
+import logo from '../../assets/brand/logo.svg'
+import logoName from '../../assets/brand/MEDUP.svg'
+import title from '../../assets/brand/title.svg'
+
+
 
 import "./Login.css";
 
@@ -41,55 +49,64 @@ const Login = () => {
         <section className="text-center text-lg-start">
             {/* <!-- Jumbotron --> */}
             <div className="container py-4">
-                <div className="row g-0 align-items-center">
+                <div className="container p-5 d-flex justify-content-center">
+                    <img src={title} alt="welcome"/>
+                </div>
+                <div className="row g-0 pt-4 align-items-center">
                 <div className="col-lg-6 mb-5 mb-lg-0">
-                    <div className="card cascading-right glassmorphic">
-                    <div className="card-body p-5 shadow-5 text-center">
-                        <h2 className="fw-bold mb-5">Log in now</h2>
-                        <form>
-                            {/* create a list with "fake tabs" to simulate two different paths. Actually, it capture a boolean value instead of navigate */}
-                            <ul className="nav nav-tabs nav-justified mb-3" role="tablist">
-                                <li className="nav-item pointed" role="presentation">
-                                    <a className={!isDoctor ? "nav-link active" : "nav-link"} data-mdb-toggle="tab" onClick={e => setIsDoctor(false)} role="tab"
-                                    aria-selected={!isDoctor}><i className="fas fa-chart-pie fa-fw me-2"></i>I'm a patient</a>
-                                </li>
-                                <li className="nav-item pointed" role="presentation">
-                                    <a className={isDoctor ? "nav-link active" : "nav-link"} data-mdb-toggle="tab" onClick={e => setIsDoctor(true)} role="tab"
-                                    aria-selected={isDoctor}><i className="fas fa-chart-line fa-fw me-2"></i>I'm a doctor</a>
-                                </li>
-                            </ul>
-                            {/* <!-- Email input --> */}
-                            <div className="form-outline mb-4">
-                                <label className="form-label">Email address</label>
-                                <input type="email" 
-                                        id="form3Example3" 
-                                        className="form-control" 
-                                        onChange={e => setInsertedUsername(e.target.value)}
-                                />
-                            </div>
-                            {/* <!-- Password input --> */}
-                            <div className="form-outline mb-4">
-                                <label className="form-label">Password</label>
-                                <input type="password" 
-                                        id="form3Example4" 
-                                        className="form-control" 
-                                        onChange={e => setInsertedPassword(e.target.value)}
-                                />
-                            </div>
-                            {/* <!-- Submit button --> */}
-                            <button 
-                                type="button" 
-                                className="btn btn-primary btn-block mb-4"
-                                onClick={loginUser}>
-                                Log in
-                            </button>
-                        </form>
-                    </div>
+                    <div className="card cascading-right shadow-sm glassmorphic">
+                        <div className="card-body p-5 shadow-5 text-center">
+                            <h2 className="mb-5">Log in now</h2>
+                            <form>
+                                {/* create a list with "fake tabs" to simulate two different paths. Actually, it capture a boolean value instead of navigate */}
+                                <ul className="nav nav-tabs nav-justified mb-3" role="tablist">
+                                    <li className="nav-item pointed" role="presentation">
+                                        <a className={!isDoctor ? "nav-link active" : "nav-link"} data-mdb-toggle="tab" onClick={e => setIsDoctor(false)} role="tab"
+                                        aria-selected={!isDoctor}>
+                                            I'm a patient
+                                            <img className="m-2" src={patient} alt="patient icon"/>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item pointed" role="presentation">
+                                        <a className={isDoctor ? "nav-link active" : "nav-link"} data-mdb-toggle="tab" onClick={e => setIsDoctor(true)} role="tab"
+                                        aria-selected={isDoctor}>
+                                            I'm a doctor
+                                            <img className="m-2" src={doctor} alt="doctor icon"/>
+                                        </a>
+                                    </li>
+                                </ul>
+                                {/* <!-- Email input --> */}
+                                <div className="form-outline mb-4">
+                                    <label className="form-label">Email address</label>
+                                    <input type="email" 
+                                            id="form3Example3" 
+                                            className="form-control" 
+                                            onChange={e => setInsertedUsername(e.target.value)}
+                                    />
+                                </div>
+                                {/* <!-- Password input --> */}
+                                <div className="form-outline mb-4">
+                                    <label className="form-label">Password</label>
+                                    <input type="password" 
+                                            id="form3Example4" 
+                                            className="form-control" 
+                                            onChange={e => setInsertedPassword(e.target.value)}
+                                    />
+                                </div>
+                                {/* <!-- Submit button --> */}
+                                <button 
+                                    type="button" 
+                                    className="btn btn-primary btn-block mb-4 px-5"
+                                    onClick={loginUser}>
+                                    Log in
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div className="col-lg-6 mb-5 mb-lg-0">
-                    <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" className="w-100 rounded-4 shadow-4"
-                    alt="" />
+                    <img src={bg} className="w-100 rounded-4 shadow-4"
+                    alt="medup background" />
                 </div>
                 </div>
             </div>
@@ -97,8 +114,8 @@ const Login = () => {
             </section>
             {/* <!-- Section: Design Block --> */}
         </div>
-                    </>
-                );
+        </>
+    );
 };
 
 export default Login

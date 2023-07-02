@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import AppointmentCard from "./AppointmentCard";
 import "./AppointmentsList.css";
 
-const AppointmentsList = () => {
+const AppointmentsList = ({isDoctor}) => {
 
     const [appointments, setAppointments] = useState([]);
 
   const getAppointments = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/appointments`, {
+      const response = await fetch(`http://localhost:4000/${isDoctor ? "doctor" : "patient"}/appointments`, {
         method : "GET",
         credentials: 'include',
       });
@@ -23,7 +23,7 @@ const AppointmentsList = () => {
   
   useEffect(() => {
     getAppointments();
-  }, [appointments])
+  }, [])
 
   
     return (
@@ -31,7 +31,7 @@ const AppointmentsList = () => {
             <div className="container">
               <div className="overflow-auto">
                     {appointments.map(appointment => 
-                      <AppointmentCard appointment={appointment} />)
+                      <AppointmentCard appointment={appointment} isDoctor={isDoctor}/>)
                     }
               </div>   
             </div>

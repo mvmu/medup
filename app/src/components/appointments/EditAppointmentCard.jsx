@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./AppointmentCard.css";
+import "./EditAppointmentCard.css";
 import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';
 import pendingIcon from '../../assets/status_icons/pending.svg';
 import editIcon from '../../assets/usability/pen.svg';
 
 
-const AppointmentCard = ({appointment, isDoctor}) => {
+const EditAppointmentCard = ({appointment, isDoctor}) => {
 
     const navigate = useNavigate();
 
@@ -76,4 +76,4 @@ const AppointmentCard = ({appointment, isDoctor}) => {
 
 
 
-export default AppointmentCard
+export default EditAppointmentCard

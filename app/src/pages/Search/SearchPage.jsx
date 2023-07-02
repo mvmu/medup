@@ -97,12 +97,8 @@ const SearchPage = () => {
                     Reset all filters
                 </button>
             </div>
-
-            <div className="input-group-append">
-              <i className="fa fa-search"></i>
-            </div>
         </div>
-        <div className="row">
+        <div className="row pt-5">
           <DoctorsList doctors={filteredDoctors} />
         </div>
       </div>

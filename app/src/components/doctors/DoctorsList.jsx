@@ -12,7 +12,7 @@ const DoctorsList = ({doctors}) => {
               <div className="container">
                   <div className="alert alert-danger m-5 p-3" role="alert">Sorry, we couldn't find any doctor that matches your criteria</div> 
               </div>
-              : <div className="row d-flex justify-content-center">
+              : <div className="row d-flex m-2 justify-content-center">
                     {doctors.map(doctor => 
                       <DoctorsCard doctor={doctor} key={doctor.id}/>)
                     }

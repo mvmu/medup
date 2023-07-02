@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-
 import "./AppointmentPage.css";
 // add passedDoctorId and passedCategoryId as optional parameters, in case we land to this page from the search page/doctor card button
 const AppointmentPage = () => {
@@ -150,10 +149,19 @@ const AppointmentPage = () => {
       return (
         <>
         <div className="container">
-            <form className="p-3">
-                <div className="row">
+            {/* a new div to display the page title and a brief explanation input */}
+            <div className="row">
+                <h2 className="pt-5">Find and book an appointment</h2>
+                <h5>Then, you just have to wait you doctor's confirmation</h5>
+            </div>
+            <form className="p-5 m-5 rounded shadow-lg" id="formId">
+                <div className="row pt-2">
                     {/* use the onChange react callback to store the input value into the selectedCategory variable */}
-                    <select defaultValue={null} className="form-select-lg mb-5" aria-label=".form-select-lg"  onChange={e => setSelectedCategory(e.target.value)}>
+                    <select defaultValue={null} 
+                            className="form-select-lg mb-5 bg-light border-0 shadow-sm" 
+                            aria-label=".form-select-lg"  
+                            onChange={e => setSelectedCategory(e.target.value)}
+                        >
                         <option value={null}>Select category</option>
                         {/* a map function to check every category and add it to the dropdown as an option, with ID as both key and value props and value as the visible text */}
                         {categories.map(category => 
@@ -164,7 +172,12 @@ const AppointmentPage = () => {
                 <div className="row">
                     {/* if there isn't a selected category, the select input will be disabled */}
                     {/* TODO: solve problems with disabled */}
-                    <select defaultValue={null} disabled={!selectedCategory} className="form-select-lg mb-5" aria-label=".form-select-lg" onChange={e => setSelectedDoctor(e.target.value)}>
+                    <select defaultValue={null} 
+                            disabled={!selectedCategory} 
+                            className="form-select-lg mb-5 bg-light border-0 shadow-sm" 
+                            aria-label=".form-select-lg" 
+                            onChange={e => setSelectedDoctor(e.target.value)}
+                        >
                         <option value={null}>Select doctor</option>
                         {/* a map function to check every category and add it to the dropdown as an option, with ID as both key and value props and value as the visible text */}
                         {doctorsByCategory.map(doctor => 
@@ -172,13 +185,18 @@ const AppointmentPage = () => {
                         )}
                     </select>
                 </div>
+                {/* a new div to display the date input */}
                 <div className="row">
-                    <input disabled={!selectedDoctor} type="date" className="form-control" onChange={e => setSelectedDate(e.target.value)}/>
+                    <input disabled={!selectedDoctor} 
+                            type="date" 
+                            className="form-control-lg bg-light border-0 shadow-sm" 
+                            onChange={e => setSelectedDate(e.target.value)}
+                        />
                 </div>
+                {/* a new div to display the time input */}
                 <div className="row">
-                    <div className="input-group">
-                        <div className="input-group-prepend">
-                            <div className="row p-2">
+                    <div className="input-group justify-content-center">
+                            <div className="row pt-4">
                                 {hoursGrid.map((row) => row.map((hour, index) => 
                                     <div className="col-md-4 p-2">
                                         <button 
@@ -187,20 +205,26 @@ const AppointmentPage = () => {
                                         id={index} 
                                         key={index}
                                         disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
-                                        className={selectedTime === hour ? "btn btn-primary" : "btn btn-secondary"} 
-                                        onClick={e => setSelectedTime(e.target.value)}>
+                                        className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"} 
+                                        onClick={e => setSelectedTime(e.target.value)}
+                                        >
                                             {hour}
                                         </button>
                                     </div>))}
                             </div>
-                        </div>
                     </div>
                 </div>
+                {/* a new div to display the comment input */}
                 <div className="row p-3">
-                    <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea" onChange={e => setPatientNote(e.target.value)}></textarea>
+                    <textarea 
+                        disabled={!selectedDoctor || !selectedDate || !selectedTime} 
+                        className="form-control-lg shadow-sm bg-light" 
+                        placeholder="Leave a comment here" 
+                        onChange={e => setPatientNote(e.target.value)}
+                    />
                 </div>
-                <div className="row p-3">
-                    <button type="button" className="btn btn-primary" onClick={e => sendForm()}>Add appointment</button>
+                <div className="row pt-4">
+                    <button type="button" className="btn btn-primary p-3" onClick={e => sendForm()}>Add appointment</button>
                 </div>
             </form>
 

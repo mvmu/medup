@@ -8,14 +8,14 @@ const Home = ({isDoctor}) => {
         <>
         <div className="container-fluid">
             <div className="row">
-                <UserInfo />
+                <UserInfo isDoctor={isDoctor}/>
             </div>
             <div className="container">
-                <div className="d-flex justify-content-start pt-4 pb-2">
+                <div className="d-flex justify-content-start pt-5 pb-2">
                     <h2>Your next appointments</h2>
                 </div>
             <div className="row">
-                <AppointmentsList />
+                <AppointmentsList isDoctor={isDoctor} />
             </div>
             
             </div>

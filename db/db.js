@@ -32,17 +32,29 @@ async function logIn({email,password,isDoctor}) {
 // - search Doctors 
 // - search Appointments
 
-async function getUserAppointments(userId) {
+async function getUserAppointments(userId, isDoctor) {
     let sql = connect();
 
         try{
             //data variable containing the query result. Postgres library requires the following syntax to pass parameters
-            let data = await sql`SELECT doctor.name as doctor_name, doctor.surname as doctor_surname, doctor.medical_center, category.value as category, status.value as status, appointment_date, appointment_time, patient_note, doctor_note 
+            let data = await sql`SELECT 
+            doctor.name as doctor_name, 
+            doctor.surname as doctor_surname, 
+            doctor.medical_center, 
+            patient.name as patient_name,
+            patient.surname as patient_surname,
+            category.value as category, 
+            status.value as status, 
+            appointment_date, 
+            appointment_time, 
+            patient_note, 
+            doctor_note 
             FROM appointment
-                INNJER JOIN doctor ON doctor_id = doctor.id
+                INNER JOIN doctor ON doctor_id = doctor.id
+                INNER JOIN patient ON patient_id = patient.id
                 INNER JOIN category ON doctor.category_id = category.id
                 INNER JOIN status ON status_id = status.id
-            WHERE patient_id = ${userId} AND status_id != 3 AND appointment_date >= now()
+            WHERE ${sql(isDoctor ? "doctor_id" : "patient_id")} = ${userId} AND status_id != 3 AND appointment_date >= now()
             ORDER BY appointment_date ASC, appointment_time ASC`;
 
             //the query always return an array, but in this case we'll always have a single result. So we return the first and only element of the array

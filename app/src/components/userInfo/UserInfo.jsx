@@ -4,7 +4,7 @@ import { NavLink as Link } from 'react-router-dom';
 import "./UserInfo.css";
 import Button from "../button/Button";
 
-const UserInfo = () => {
+const UserInfo = ({isDoctor}) => {
 
     const [userInfo, setUserInfo] = useState({});
 
@@ -26,7 +26,35 @@ const UserInfo = () => {
   // invoke useEffect to fetch user info when the component is ready
   useEffect(() => {
     getUserInfo();
-  }, [userInfo])
+  }, [])
+
+  function defineContent() {
+    if(!isDoctor) {
+      return <>
+              <Link to="/appointment">
+                  <Button 
+                    className="btn btn-primary m-2"
+                    text="Get appointment"
+                  />
+                  </Link> 
+                  <Link to="/search">
+                    <Button 
+                      className="btn btn-light m-2"
+                      text="Search doctors"
+                    />
+                  </Link> 
+              </> 
+    } else {
+      return <>
+              <Link to="/manage">
+                  <Button 
+                    className="btn btn-primary m-2"
+                    text="Manage appointments"
+                  />
+                  </Link> 
+              </> 
+    }
+  }
 
   
     return (
@@ -36,22 +64,10 @@ const UserInfo = () => {
                 <h2>How can we help you?</h2>
                 <div className="row">
                     <div className="col-md-12 text-center p-2">
-                        <Link to="/appointment">
-                            <Button 
-                                className="btn btn-primary m-2"
-                                text="Get appointment"
-                            />
-                        </Link> 
-                        <Link to="/search">
-                          <Button 
-                              className="btn btn-light m-2"
-                              text="Search doctors"
-                          />
-                        </Link>                  
+                      {defineContent()}        
                     </div>
                 </div>
-                <div className="row">
-                    
+                <div className="row"> 
                 </div>
             </div>
         </>
