@@ -2,16 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EditAppointmentPanel.css";
+// import icons
 import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';
 import pendingIcon from '../../assets/status_icons/pending.svg';
-
-// TODO-1: crear una funcion para cancelar la cita/delete crud, pasandole el appointment.id como path parameter formato -> /appointment/delete/<appointment_id>
-// TODO-2 : implementar la nueva crud en index.js
-// TODO-3 : utilizar la funcion previamente creada 'deleteRecord' para borrar en el db, pasandole el nombre de la tabla + id de la cita. Devolvera un booleano si ha sido borrada count > 0
-// TODO-4 : devolver 200 o 400 en el index.js y gestionar la respuesta desde el front
-// TODO-5 : crear un nuevo booleano con la misma estructura que appointmentUpdated, para mostrar la alerta
-
 
 const EditAppointmentPanel = ({appointment, isDoctor}) => {
     const navigate = useNavigate();
@@ -179,49 +173,66 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
                     </h4>
                     <div className="card-body">
                         <h5 className="card-title">{subtitle}</h5>
+                        <h6 className="pt-4">Date</h6>
                         {/* clean the date and time format with slice method, to get just the date and time */}
+                        {/* the previously scheduled date will appear automatically */}
                         <input type="date" 
+                                className="form-control-md bg-light border-0 shadow-sm"
                                 value={changedDate} 
                                 disabled={isDoctor || appointmentUpdated || appointmentCancelled}  
                                 onChange={e => setChangedDate(e.target.value)} 
                         />
-                        <div className="row pt-4">
+                        {/* hours grid */}
+                        <h6 className="pt-4">
+                            Time slots 
+                        </h6>
+                        <div className="row pt-1">
                                 {hoursGrid.map((row) => row.map((hour, index) => 
                                     <div className="col-md-4 p-2">
                                         <button 
-                                        type="button"
-                                        value={hour} 
-                                        id={index} 
-                                        key={index}
-                                        disabled={doctorAppointmentsSlots.includes(hour) || isDoctor || appointmentUpdated || appointmentCancelled} 
-                                        className={changedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"} 
-                                        onClick={e => setChangedTime(e.target.value)}
+                                            type="button"
+                                            value={hour} 
+                                            id={index} 
+                                            key={index}
+                                            disabled={doctorAppointmentsSlots.includes(hour) || isDoctor || appointmentUpdated || appointmentCancelled} 
+                                            className={changedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"} 
+                                            onClick={e => setChangedTime(e.target.value)}
                                         >
                                             {hour}
                                         </button>
                                     </div>))}
                         </div>
+                        <h6 className="pt-4">
+                            Patient notes
+                        </h6>
                         {/* patient note */}
                         <div className="row p-3">
                             <textarea 
-                            value={changedPatientNote || ""}
-                            disabled={isDoctor || appointmentUpdated || appointmentCancelled} 
-                            className="form-control-lg shadow-sm bg-light" 
-                            placeholder="Leave a comment here" 
-                            onChange={e => setChangedPatientNote(e.target.value)}
+                                value={changedPatientNote || ""}
+                                disabled={isDoctor || appointmentUpdated || appointmentCancelled} 
+                                className="form-control-lg shadow-sm bg-light" 
+                                placeholder="Leave a comment here" 
+                                onChange={e => setChangedPatientNote(e.target.value)}
                             />
                         </div>
                          {/* doctor note */}
+                         <h6 className="pt-4">
+                            Doctor notes
+                        </h6>
                         <div className="row p-3">
                             <textarea 
-                            value={changedDoctorNote || ""}
-                            disabled={!isDoctor || appointmentUpdated || appointmentCancelled} 
-                            className="form-control-lg shadow-sm bg-light" 
-                            placeholder="Leave a comment here" 
-                            onChange={e => setChangedDoctorNote(e.target.value)}
+                                value={changedDoctorNote || ""}
+                                disabled={!isDoctor || appointmentUpdated || appointmentCancelled} 
+                                className="form-control-lg shadow-sm bg-light" 
+                                placeholder="Leave a comment here" 
+                                onChange={e => setChangedDoctorNote(e.target.value)}
                             />
                         </div>
                         {/* status */}
+                        {/* status */}
+                        <h6 className="pt-4">
+                            Status
+                        </h6>
                         <div className="container rounded" style={{backgroundColor: defineColor(status)}}>
                             {status}
                             <img className="mx-2 p-2" src={defineIcon(status)} alt="status icon" />
@@ -231,20 +242,23 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
                             {/* update appointment if the user is a patient. - change status to 1 (pending). If its a doctor instead, change to 2 (confirmed) */}
                             <div className="col-md-6">
                                 <button type="button" 
-                                        className="btn btn-primary"
-                                        onClick={update}
-                                        // a composed boolean condition. If nothing has changed, then the button will be disabled
-                                        disabled={
-                                            (!isDoctor && changedDate === date && changedTime === time && changedPatientNote === appointment.patient_note && changedDoctorNote === appointment.doctor_note) || appointmentUpdated || appointmentCancelled}
+                                    className="btn btn-primary"
+                                    onClick={update}
+                                    // a composed boolean condition. If nothing has changed, then the button will be disabled
+                                    disabled={
+                                        (!isDoctor && changedDate === date && changedTime === time && changedPatientNote === appointment.patient_note && changedDoctorNote === appointment.doctor_note) || appointmentUpdated || appointmentCancelled}
                                 >
                                     {isDoctor ? "Confirm appointment" : "Update appointment"}
                                 </button>
                             </div>
                             {/* delete appointment - change status to 3(cancelled) */}
                             <div className="col-md-6">
-                                <button type="button" className="btn btn-danger"
+                                <button type="button" 
+                                        className="btn btn-danger"
                                         onClick={cancel}
-                                        disabled={appointmentUpdated || appointmentCancelled}>Delete appointment</button>
+                                        disabled={appointmentUpdated || appointmentCancelled}>
+                                            Delete appointment
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -260,6 +274,7 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
                     </div>
                     </> 
                     : <></>}
+                    {/* end of conditional */}
                     {/* An alert that is displayed only if appointmentCancelled variable is true */}
                     {appointmentCancelled ? 
                     <>
@@ -271,7 +286,8 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
                         <div className="spinner-border text-light mt-3" role="status"/>
                     </div>
                     </> 
-                    : <></>}
+                    : <></>} 
+                    {/* end of conditional */}
             </div>
         </div>
             

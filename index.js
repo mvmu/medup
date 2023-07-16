@@ -13,21 +13,24 @@ const cors = require('cors');
 //constant to use read + cookies sent from the app for the session
 const cookieParser = require('cookie-parser');
 
-// constant server to connect it through express
+//constant server to connect it through express
 const server = express();
 
 //constant to import the functions from the DB configuration
 const {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, cancelAppointment} = require("./db/db");
 
+//constant to apply into the key 'secret', when creating 'use' middleware for storing sessions
 const SECRET = "cei-final-project";
 
 
 // USE MIDDLEWARE
+// middleware to use body-parser
 server.use(bodyParser.urlencoded({
     extended: true
   }));
 server.use(bodyParser.json());
 
+// middleware to use cookies
 server.use(cookieParser(SECRET));
 
 //middleware to avoid CORS policy issues
@@ -46,8 +49,8 @@ server.use(session({
     }
 }));
 
-// GET MIDDLEWARES
-// middleware to get the logged user id
+// GET ENDPOINTS
+// endpoint to get the logged user id
 server.get("/getUserSession", (request,response) => { 
     if(request.session.sessionUser) {
         response.send(request.session.sessionUser);
@@ -109,7 +112,7 @@ server.get("/logout", (request, response) => {
     response.sendStatus(200);
 })
 
-// POST MIDDLEWARE
+// POST ENDPOINTS
 server.post("/appointments", async (request, response) => {
     // a variable to store the result of saved appointment (through form)
     let saved = await saveAppointment(request.body, request.session.sessionUser.userId);
@@ -135,6 +138,7 @@ server.post("/login", async (request, response) => {
 
 });
 
+// PUT ENDPOINTS
 server.put("/appointment/update", async (request, response) => {
     // a variable to identify if the appointment has been updated or not
     let updated = await updateAppointment(request.body);

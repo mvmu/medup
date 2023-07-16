@@ -1,7 +1,8 @@
 import React from "react";
-import "./SearchPage.css";
 import { useState, useEffect } from "react";
 import DoctorsList from "../../components/doctors/DoctorsList";
+import "./SearchPage.css";
+// import assets 
 import SearchIcon from '../../assets/usability/search.svg'
 
 
@@ -49,7 +50,7 @@ const SearchPage = () => {
     );
   });
 
-
+  // function to keep the category selected
     function onButtonClick(e) {
         let selectedCategory = parseInt(e.target.value); // to compare between integers
         setCategoryInserted(selectedCategory);
@@ -57,7 +58,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className="container-fluid pt-5">
         <div className="container">
           <div className="row pt-5">
             <h2>Find doctors by name or surname</h2>
@@ -93,12 +94,16 @@ const SearchPage = () => {
                                                 {category.value}
                                             </button>)}
                 <br />
-                <button className="btn btn-danger mt-3 p-2" onClick={e => {setCategoryInserted(null);setTextInserted("")}}>
+                <button 
+                  className="btn btn-danger mt-3 p-2" 
+                  // TODO, SOLVE RESET ALL FILTERS
+                  disabled={textInserted === "" || categoryInserted === null} 
+                  onClick={e => {setCategoryInserted(null);setTextInserted("")}}>
                     Reset all filters
                 </button>
             </div>
         </div>
-        <div className="row pt-5">
+        <div className="row pt-3">
           <DoctorsList doctors={filteredDoctors} />
         </div>
       </div>

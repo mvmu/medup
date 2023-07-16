@@ -2,12 +2,6 @@
     margin-right: -50px;
   }
 
-.glassmorphic {
-    background: hsla(0, 0%, 100%, 0.55);
-    backdrop-filter: blur(30px);
-    border: none;
-  }
-
 .pointed {
   cursor: pointer;
 }

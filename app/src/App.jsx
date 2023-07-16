@@ -8,6 +8,8 @@ import AppointmentPage from './pages/Appointment/AppointmentPage';
 import EditAppointmentPage from './pages/Appointment/EditAppointmentPage';
 import Login from './pages/Login/Login'
 import NavBar from './components/navbar/NavBar';
+import Footer from "./components/footer/Footer";
+import UserSessionContext from './context/UserSessionContext';
 //import router 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -37,31 +39,38 @@ const App = () => {
                 console.log(error)
                 }
         }
-    }
-
+    };
 
     useEffect(() => {
         getUserSession();
     }, [loggedUser])
 
+
+
     return (
-        loggedUser.userId ?  <Router>
-            <NavBar isDoctor={loggedUser.isDoctor}/>
-            { loggedUser.isDoctor ? 
+        loggedUser.userId ?  
+        <UserSessionContext.Provider value={loggedUser} >
+            <Router>
+                <NavBar />
+                { loggedUser.isDoctor ? 
+                    <Routes>
+                        <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
+                        <Route path="/edit" element={<EditAppointmentPage />} />
+                        <Route path="/appointment" element={<AppointmentPage />} />
+                    </Routes>
+                :
                 <Routes>
-                    <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
-                    <Route path="/edit" element={<EditAppointmentPage />} />
-                    <Route path="/appointment" element={<AppointmentPage />} />
+                <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
+                <Route path="/edit" element={<EditAppointmentPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/appointment" element={<AppointmentPage />} />
                 </Routes>
-            :
-            <Routes>
-            <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
-            <Route path="/edit" element={<EditAppointmentPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/appointment" element={<AppointmentPage />} />
-            </Routes>
-        }
-      </Router> : <Login />
+                }
+                <Footer />
+            </Router>
+      </UserSessionContext.Provider>
+
+       : <Login />
     );
 }
 

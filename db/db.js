@@ -171,16 +171,12 @@ async function findDoctorsByCategory(category_id){
     try{
         //a variable containing the query result as data
         let data = await sql `SELECT id, name, surname, email, medical_center FROM doctor WHERE category_id = ${category_id}`;
-
         return data;
-
     }catch(error){
         // in case of error, print a log message
         console.log(`an error occurred trying to fetch doctors with category: ${category_id}`, error);
-
         // return an empty result
         return [];
-        
     }finally{
         //close the connection
         sql.end();  
@@ -190,20 +186,16 @@ async function findDoctorsByCategory(category_id){
 // this function is specific for getting all the doctors info except the passwords
 async function findDoctors(){
     let sql = connect();
-
     try{
         let data = await sql `SELECT doctor.id as id, name, surname, email, medical_center, category.value as category_name, category.id as category_id FROM doctor
                             INNER JOIN category ON doctor.category_id = category.id`;
 
         return data;
-
     }catch(error){
         // in case of error, print a log message
         console.log('an error occurred trying to fetch doctors', error);
-
         // return an empty result
-        return [];
-        
+        return [];    
     }finally{
         //close the connection
         sql.end();  
@@ -212,22 +204,17 @@ async function findDoctors(){
 // data is the response.body from the Frontend
 async function saveAppointment(data,userId){
     let sql = connect();
-    
     try{
         //all the appointments are saved as result, with status id = 1 (pending)
         let result = await sql`INSERT INTO appointment (patient_id, doctor_id, status_id, appointment_date, appointment_time, patient_note) 
                                 VALUES (${userId},${data.doctor_id},1,${data.appointment_date}, ${data.appointment_time}, ${data.patient_note})`;
-
         // check if the appointment has been added with a boolean
         return result.count > 0;
-
     }catch(error){
         // in case of error, print a log message
         console.log('an error occurred trying to save the appointment', error);
-
         // return false boolean if something went wrong (because the return type of the function is a boolean)
         return false;
-        
     }finally{
         //close the connection
         sql.end();  
@@ -236,7 +223,6 @@ async function saveAppointment(data,userId){
 
 async function updateAppointment(data) {
     let sql = connect();
-
     try {
         let result = await sql`UPDATE appointment
                                 SET status_id = ${data.new_status_id}, appointment_date = ${data.new_date}, appointment_time = ${data.new_time}, patient_note = ${data.patient_note}, doctor_note = ${data.doctor_note}
@@ -247,7 +233,6 @@ async function updateAppointment(data) {
     } catch(error) {
         // in case of error, print a log message
         console.log('an error occurred trying to update the appointment', error);
-
         // return false boolean if something went wrong (because the return type of the function is a boolean)
         return false;
     } finally {
@@ -258,17 +243,14 @@ async function updateAppointment(data) {
 
 async function cancelAppointment(id) {
     let sql = connect();
-
     try {
         let result = await sql`UPDATE appointment SET status_id = 3 
         WHERE id = ${id}`
-
         // check if the appointment has been updated with a boolean
         return result.count > 0;
     } catch(error) {
         // in case of error, print a log message
         console.log('an error occurred trying to update the appointment status to cancelled', error);
-
         // return false boolean if something went wrong (because the return type of the function is a boolean)
         return false;
     } finally {

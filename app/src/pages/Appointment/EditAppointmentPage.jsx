@@ -6,33 +6,35 @@ import arrowLeftIcon from '../../assets/usability/arrow-left-circle.svg';
 
 
 const EditAppointmentPage = () => {
-    // a constant to read the state during navigation
+    // constant to read the state during navigation
     const location = useLocation();
     const navigate = useNavigate();
-    // a constant to asign the appointment passed through state
+    // constant to asign the appointment passed through state
     const appointment = location !== null && location.state != null ? location.state.appointment : null;
     const isDoctor = location !== null && location.state != null ? location.state.isDoctor : null;
 
     function goBack(){
-        //to go back by one step in the url
+        // to go one step back in the url
         navigate("/");
     }
 
  
     return (
         <>
-        <div className="container-fluid">
+        <div className="container-fluid pt-5">
             <div className="container-fluid pt-5">
                 <div className="row">
-                    <button
-                        type="button"
-                        className="btn btn-primary col-md-1"
-                        id="buttonBack"
-                        onClick={goBack}
-                        >
-                        <img src={arrowLeftIcon} className="text-white p-2" alt="arrow left"/>
+                    <div className="col-md-2">
+                        <button
+                            type="button"
+                            className="btn btn-primary d-flex justify-content-evenly align-items-center"
+                            id="buttonBack"
+                            onClick={goBack}
+                            >
+                            <img src={arrowLeftIcon} className="text-white p-2" alt="arrow left"/>
                             Home
-                    </button>
+                        </button>
+                    </div> 
                 </div>
                 <div className="row pt-2">
                     <h2>Edit appointment panel</h2>

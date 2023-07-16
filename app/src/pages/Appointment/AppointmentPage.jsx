@@ -148,7 +148,7 @@ const AppointmentPage = () => {
     
       return (
         <>
-        <div className="container">
+        <div className="container pt-5">
             {/* a new div to display the page title and a brief explanation */}
             <div className="row">
                 <h2 className="pt-5">Find and book an appointment</h2>
@@ -191,7 +191,7 @@ const AppointmentPage = () => {
                             type="date" 
                             className="form-control-lg bg-light border-0 shadow-sm" 
                             onChange={e => setSelectedDate(e.target.value)}
-                        />
+                    />
                 </div>
                 {/* a new div to display the time input */}
                 <div className="row">
@@ -200,13 +200,13 @@ const AppointmentPage = () => {
                                 {hoursGrid.map((row) => row.map((hour, index) => 
                                     <div className="col-md-4 p-2">
                                         <button 
-                                        type="button"
-                                        value={hour} 
-                                        id={index} 
-                                        key={index}
-                                        disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
-                                        className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"} 
-                                        onClick={e => setSelectedTime(e.target.value)}
+                                            type="button"
+                                            value={hour} 
+                                            id={index} 
+                                            key={index}
+                                            disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
+                                            className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"} 
+                                            onClick={e => setSelectedTime(e.target.value)}
                                         >
                                             {hour}
                                         </button>
@@ -224,7 +224,11 @@ const AppointmentPage = () => {
                     />
                 </div>
                 <div className="row pt-4">
-                    <button type="button" className="btn btn-primary p-3" onClick={e => sendForm()}>Add appointment</button>
+                    <button 
+                        type="button" 
+                        className="btn btn-primary p-3" 
+                        onClick={e => sendForm()}>Add appointment
+                    </button>
                 </div>
             </form>
 

@@ -27,7 +27,7 @@ const UserInfo = ({isDoctor}) => {
   useEffect(() => {
     getUserInfo();
   }, [])
-
+  // function to display one or two buttons with different actions, depending on the isDoctor boolean
   function defineContent() {
     if(!isDoctor) {
       return <>
@@ -54,20 +54,18 @@ const UserInfo = ({isDoctor}) => {
                   </Link> 
               </> 
     }
-  }
+  };
 
-  
     return (
         <>
-            <div className="container pt-4 pb-2" id="userWelcome">
+            <div className="container py-5" id="userWelcome">
                 <h1 className="p-2">Hi {userInfo.name},</h1>
                 <h2>How can we help you?</h2>
                 <div className="row">
-                    <div className="col-md-12 text-center p-2">
+                    <div className="col-md-12 text-center pt-3">
+                      {/* use the defineContent function to apply depending on the boolean isDoctor*/}
                       {defineContent()}        
                     </div>
-                </div>
-                <div className="row"> 
                 </div>
             </div>
         </>
