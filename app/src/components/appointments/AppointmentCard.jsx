@@ -73,16 +73,16 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                 {/* card body */}
                 <div className="card-body">
                     {/* a single row into the card body */}
-                    <div className="row">
+                    <div className="row justify-content-center">
                         <div className="row">
                             {/* column to contain the filtered date */}
-                            <div className="col-md-3 border-end pb-2 my-3">
+                            <div className="col-md-4 border-end pb-2 my-3">
                                 {/* clean the date and time format with slice method, to get just the date and time */}
                                 <h6 className="card-text">{day}</h6>
                                 <h6 className="card-text">{month}</h6>
                             </div>
                             {/* column to contain the doctor/patient name and the time */}
-                            <div className="col-md-9 d-flex flex-column justify-content-center align-items-center">
+                            <div className="col-md-8 d-flex flex-column justify-content-center align-items-center">
                                 <h5 className="card-title">{subtitle}</h5>
                                 <p className="card-text">{time}</p>
                                 {/* apply the function defineColor and defineIcon into the body of the card to personalize the label depending on the status */}                           
@@ -91,16 +91,15 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                         {/* new row to contain the edit button and the status */}
                         <div className="row mt-3 justify-content-start">
                             {/* column to contain edit button */}
-                            <div className="col-md-4 d-flex justify-content-start">
-                                <button     
+                            <div className="col-md-4 d-flex justify-content-center">
+                                <button  
                                     type="button" 
-                                    className="btn btn-outline-secondary btn-sm" 
+                                    id="buttonEdit"
+                                    className="btn btn-outline-secondary btn-sm mb-2" 
                                     // use the function navigateToEdit on click
                                     onClick={navigateToEdit}>
-                                    Edit
                                     {/* edit icon as an img */}
                                     <img 
-                                        className="ms-2"
                                         src={editIcon} 
                                         alt="edit icon" 
                                     />

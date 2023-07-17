@@ -1,0 +1,13 @@
+#buttonEdit {
+    border: 1px solid var(--color-primary40);
+    border-radius: 1em;
+    width: 70%;
+    color: var(--color-black);
+    opacity: 80%;
+}
+
+#buttonEdit:hover {
+    color: var(--color-black);
+    background-color: var(--color-primary30);
+    border: none;
+}

@@ -1,13 +1,17 @@
 import React from "react";
+// import useState and useEffect to change the state and apply side effects to the elements
 import { useState, useEffect } from "react";
+// import useNavigate to change window passing data 
 import { useNavigate } from "react-router-dom";
 import "./EditAppointmentPanel.css";
-// import icons
+// import assets
 import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';
 import pendingIcon from '../../assets/status_icons/pending.svg';
 
+// contant passing appointment and isDoctor parameters
 const EditAppointmentPanel = ({appointment, isDoctor}) => {
+    // constant to navigate
     const navigate = useNavigate();
 
     //define constants to decide what to be displayed
@@ -34,7 +38,6 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
     function generateTimeGrid() {
         const hours = [];
         const rows = [];
-
         // generate hours from 9:00 AM to 8:00 PM
         for (let hour = 9; hour <= 20; hour++) {
             const date = new Date();
@@ -45,7 +48,6 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
           const elementsPerRow = 3;
           for (let i = 0; i < hours.length; i += elementsPerRow) {
             rows.push(hours.slice(i, i + elementsPerRow));
-          
         }
         return rows;
       }
@@ -64,8 +66,7 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
             console.log(error)
         }
     }
-
-    
+    // Status functions
     // return different colors depending on the status with a switch-case
     function defineColor(status) {
         switch (status) {
@@ -92,7 +93,7 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
                 return null;
         }
     }
-
+    // Update and Cancel functions
      // a function to send all the data from the form, just the info we want to store
      async function update() {
         try {
@@ -126,7 +127,6 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
             console.error(error);
         }
     }
-
     // a function to delete the appointment in front side
      async function cancel() {
         try {
@@ -157,36 +157,35 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
         }
     }
 
-
-
+    // useEffect to apply side effects to the slots, passing changedDate as a dependency
     useEffect(() => {
         getOccupiedSlots(appointment.doctor_id,changedDate);
         }, [changedDate]) // an array to define the dependencies for which the content inside useEffect must be re-executed if one of those dependencies change
 
-  
     return (
         <>
         <div className="container">
             <div className="card m-5 border-0 glassmorphic shadow" id="card">
+                {/* form title: category */}
                     <h4 className="card-header pt-3 border-0" id="cardTitle">
                         {title}
                     </h4>
+                    {/* form body */}
                     <div className="card-body">
+                        {/* subtitle: name */}
                         <h5 className="card-title">{subtitle}</h5>
                         <h6 className="pt-4">Date</h6>
                         {/* clean the date and time format with slice method, to get just the date and time */}
                         {/* the previously scheduled date will appear automatically */}
                         <input type="date" 
-                                className="form-control-md bg-light border-0 shadow-sm"
+                                className="form-control-md bg-light border-0 shadow-sm py-2 px-4 rounded"
                                 value={changedDate} 
                                 disabled={isDoctor || appointmentUpdated || appointmentCancelled}  
                                 onChange={e => setChangedDate(e.target.value)} 
                         />
                         {/* hours grid */}
-                        <h6 className="pt-4">
-                            Time slots 
-                        </h6>
                         <div className="row pt-1">
+                            <h6 className="pt-4">Time slots</h6>
                                 {hoursGrid.map((row) => row.map((hour, index) => 
                                     <div className="col-md-4 p-2">
                                         <button 
@@ -202,40 +201,36 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
                                         </button>
                                     </div>))}
                         </div>
-                        <h6 className="pt-4">
-                            Patient notes
-                        </h6>
                         {/* patient note */}
                         <div className="row p-3">
+                            <h6 className="pt-4">Patient notes</h6>
                             <textarea 
                                 value={changedPatientNote || ""}
                                 disabled={isDoctor || appointmentUpdated || appointmentCancelled} 
                                 className="form-control-lg shadow-sm bg-light" 
-                                placeholder="Leave a comment here" 
+                                placeholder={isDoctor ? "This is a field for your patient's comments" : "Leave a comment here"}
                                 onChange={e => setChangedPatientNote(e.target.value)}
                             />
                         </div>
-                         {/* doctor note */}
-                         <h6 className="pt-4">
-                            Doctor notes
-                        </h6>
+                        {/* doctor note */}
                         <div className="row p-3">
+                            <h6 className="pt-4">Doctor notes</h6>
                             <textarea 
                                 value={changedDoctorNote || ""}
                                 disabled={!isDoctor || appointmentUpdated || appointmentCancelled} 
                                 className="form-control-lg shadow-sm bg-light" 
-                                placeholder="Leave a comment here" 
+                                placeholder={!isDoctor ? "This is a field for your doctor's comments" : "Leave a comment here"}
                                 onChange={e => setChangedDoctorNote(e.target.value)}
                             />
                         </div>
                         {/* status */}
-                        {/* status */}
-                        <h6 className="pt-4">
-                            Status
-                        </h6>
-                        <div className="container rounded" style={{backgroundColor: defineColor(status)}}>
-                            {status}
-                            <img className="mx-2 p-2" src={defineIcon(status)} alt="status icon" />
+                        <div className="row">
+                            <h6 className="pt-4">Status</h6>
+                            <div className="container rounded col-8" style={{backgroundColor: defineColor(status)}}>
+                                <h5 className="pt-2">{status}
+                                    <img className="mx-2 p-2" src={defineIcon(status)} alt="status icon" />
+                                </h5>
+                            </div>
                         </div>
                         {/* save changes / delete appointment */}
                         <div className="row p-3">

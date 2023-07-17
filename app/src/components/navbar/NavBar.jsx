@@ -1,7 +1,9 @@
 import { NavLink as Link } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useContext, useState, useEffect } from 'react';
 import UserSessionContext from '../../context/UserSessionContext';
 import './NavBar.css';
+// import assets
 import logo from '../../assets/brand/logo.svg';
 import logoName from '../../assets/brand/MEDUP.svg';
 
@@ -12,6 +14,18 @@ function NavBar() {
   const isDoctor = sessionUser.isDoctor;
   // constant to detect if the menu is open in mobile and display its content
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // constant to store and act within location
+  const location = useLocation();
+
+  // close the dropdown menu when location changes
+  useEffect(() => {
+    setIsMenuOpen(false); 
+  }, [location]);
+  // constant to set/toggle the state of the menu 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   // function to log out the user session, then change the location of the window to show the login page
   async function logout() {
     try {
@@ -27,10 +41,7 @@ function NavBar() {
       console.error(error);
     }
   }
-  // constant to set the state of the menu 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  
 
   return (
     <>
@@ -38,8 +49,8 @@ function NavBar() {
       <nav className="navbar navbar-expand-lg navbar-light shadow-lg fixed-top px-3" id="navBar">
         <div className="container-fluid">
           <Link className="navbar-brand pr-2 d-flex justify-content-between" to="/">
-            <img src={logoName} alt="Medup" />
-            <img src={logo} alt="Medup" />
+            <img src={logoName} alt="Medup" className="me-1"/>
+            <img src={logo} alt="Medup"/>
           </Link>
           <button
             className={`navbar-toggler ${isMenuOpen ? 'collapsed' : ''}`}

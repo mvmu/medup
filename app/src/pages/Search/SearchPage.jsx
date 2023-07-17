@@ -13,7 +13,7 @@ const SearchPage = () => {
   const [textInserted, setTextInserted] = useState("");
   const [categoryInserted, setCategoryInserted] = useState(null);
 
-
+  // constant to get all the doctors
   const getDoctors = async () => {
     try {
       const response = await fetch("http://localhost:4000/doctors");
@@ -45,7 +45,7 @@ const SearchPage = () => {
   const filteredDoctors = doctors.filter((doctor) => {
     const fullName = `${doctor.name} ${doctor.surname}`.toLowerCase();
     return (
-      fullName.includes(textInserted.toLowerCase()) &&
+      fullName.includes(textInserted.toLowerCase().trim()) &&
       (categoryInserted === null || doctor.category_id === categoryInserted)
     );
   });
@@ -59,50 +59,50 @@ const SearchPage = () => {
   return (
     <>
       <div className="container-fluid pt-5">
+        {/* find by typing section, with a title and an input */}
         <div className="container">
           <div className="row pt-5">
             <h2>Find doctors by name or surname</h2>
-        </div>
-        <div className="row p-3">
-          <div className="form-group has-search">
-            <div className="input-group-text border-0" id="searchBar">
-              <span>
-               <img className="m-3" src={SearchIcon} alt="search icon" />
-              </span>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Type something"
-                value={textInserted}
-                onChange={(e) => setTextInserted(e.target.value)}
-              /> 
-            </div>    
           </div>
+          <div className="row p-3">
+            <div className="form-group has-search">
+              <div className="input-group-text border-0" id="searchBar">
+                <span><img className="m-3" src={SearchIcon} alt="search icon" /></span>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Type something"
+                  value={textInserted}
+                  onChange={(e) => setTextInserted(e.target.value)}
+                /> 
+              </div>    
+            </div>
         </div>
+        {/* search by category section, will contain all categories as a tag */}
         <div className="row pt-3">
             <h2>Search by category</h2>
         </div>
-            <div className="container p-3">
-                
-                {categories.map(category => <button 
-                                            key={category.id}
-                                            value={category.id} 
-                                            //compare the button value with the actual selected one (needed to do a toString since the category.id variable is an integer)
-                                            // and applies the btn-primary class if they match. Otherwise it applies the btn-secondary
-                                            className={category.id === categoryInserted ? "btn btn-primary m-1" : "btn btn-light m-1"}
-                                            onClick={onButtonClick}>
-                                                {category.value}
-                                            </button>)}
-                <br />
-                <button 
-                  className="btn btn-danger mt-3 p-2" 
-                  // TODO, SOLVE RESET ALL FILTERS
-                  disabled={textInserted === "" || categoryInserted === null} 
-                  onClick={e => {setCategoryInserted(null);setTextInserted("")}}>
-                    Reset all filters
-                </button>
-            </div>
+        <div className="container p-3">
+            {categories.map(category => <button 
+                                          key={category.id}
+                                          value={category.id} 
+                                          //compare the button value with the actual selected one (needed to do a toString since the category.id variable is an integer)
+                                          // and applies the btn-primary class if they match. Otherwise it applies the btn-secondary
+                                          className={category.id === categoryInserted ? "btn btn-primary m-1" : "btn btn-light m-1"}
+                                          onClick={onButtonClick}>
+                                            {category.value}
+                                          </button>)}
+            <br />
+            <button 
+              className="btn btn-danger mt-3 p-2" 
+              // a composed conditional
+              disabled={textInserted === "" && categoryInserted === null} 
+              onClick={e => {setCategoryInserted(null);setTextInserted("")}}>
+                Reset all filters              
+            </button>
+          </div>
         </div>
+        {/* all doctors filtered / not filtered in a row */}
         <div className="row pt-3">
           <DoctorsList doctors={filteredDoctors} />
         </div>

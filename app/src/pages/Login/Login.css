@@ -1,14 +1,38 @@
+/* a style for the card */
 .cascading-right {
     margin-right: -50px;
   }
-
+/* a class to make the tabs seem buttons */
 .pointed {
   cursor: pointer;
 }
 
-  @media (max-width: 991.98px) {
+/* setup for mobile devices */
+  @media (max-width: 767px) {
     .cascading-right {
       margin-right: 0;
+      padding-top: 0;
+    }
+    #welcome {
+      width: 80vw;
+    }
+    #pictureLogin {
+      position: fixed;
+      left: 30%;
+      top: 20%;
+      height: 20vw;
     }
   }
+
+  /* setup for big mobile devices */
+  @media (min-width: 767px) and (max-width: 991px) {
+    #pictureLogin {
+      position: fixed;
+      z-index: -1;
+      left: 32%;
+      bottom: 65%;
+      height: 27vw;
+    }
+  }
+
 

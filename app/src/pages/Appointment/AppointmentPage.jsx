@@ -1,4 +1,5 @@
 import React from "react";
+// import useState and useEffect
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import "./AppointmentPage.css";
@@ -32,7 +33,7 @@ const AppointmentPage = () => {
     // hours to book the appointment, from 9AM to 8PM divided by rows
     const hoursGrid = generateTimeGrid();
 
-    // generate a grid putting data into an array
+    // generate a grid putting data into an array, initially void
     function generateTimeGrid() {
         const hours = [];
         const rows = [];
@@ -70,7 +71,7 @@ const AppointmentPage = () => {
         if (appointmentSaved) {
             setTimeout(() => {
                 navigate('/', {replace: true})
-            }, 3000);
+            }, 4000);
         }
         }, [selectedCategory, selectedDoctor, selectedDate, appointmentSaved])
 
@@ -154,8 +155,9 @@ const AppointmentPage = () => {
                 <h2 className="pt-5">Find and book an appointment</h2>
                 <h5>Then, you just have to wait you doctor's confirmation</h5>
             </div>
-            <form className="p-5 m-5 rounded shadow-lg" id="formId">
+            <form className="p-5 m-5 rounded shadow-lg" id="formId"> 
                 <div className="row pt-2">
+                    <h6 className="text-light p-2">1. Select a category</h6>
                     {/* use the onChange react callback to store the input value into the selectedCategory variable */}
                     <select defaultValue={null} 
                             className="form-select-lg mb-5 bg-light border-0 shadow-sm" 
@@ -170,8 +172,8 @@ const AppointmentPage = () => {
                     </select>
                 </div>
                 <div className="row">
+                    <h6 className="text-light p-2">2. Select a doctor</h6>
                     {/* if there isn't a selected category, the select input will be disabled */}
-                    {/* TODO: solve problems with disabled */}
                     <select defaultValue={null} 
                             disabled={!selectedCategory} 
                             className="form-select-lg mb-5 bg-light border-0 shadow-sm" 
@@ -187,6 +189,7 @@ const AppointmentPage = () => {
                 </div>
                 {/* a new div to display the date input */}
                 <div className="row">
+                    <h6 className="text-light p-2">3. Select a date</h6>
                     <input disabled={!selectedDoctor} 
                             type="date" 
                             className="form-control-lg bg-light border-0 shadow-sm" 
@@ -194,28 +197,30 @@ const AppointmentPage = () => {
                     />
                 </div>
                 {/* a new div to display the time input */}
-                <div className="row">
+                <div className="row">                  
                     <div className="input-group justify-content-center">
-                            <div className="row pt-4">
-                                {hoursGrid.map((row) => row.map((hour, index) => 
-                                    <div className="col-md-4 p-2">
-                                        <button 
-                                            type="button"
-                                            value={hour} 
-                                            id={index} 
-                                            key={index}
-                                            disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
-                                            className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"} 
-                                            onClick={e => setSelectedTime(e.target.value)}
-                                        >
-                                            {hour}
-                                        </button>
-                                    </div>))}
-                            </div>
+                        <div className="row pt-4">
+                            <h6 className="text-light p-2">4. Select a time slot</h6>
+                            {/* a map to populate the row with time slots */}
+                            {hoursGrid.map((row) => row.map((hour, index) => 
+                                <div className="col-md-4 p-2">
+                                    <button 
+                                        type="button"
+                                        value={hour}                                             
+                                        id={index} 
+                                        key={index}
+                                        disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
+                                        className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"}                                         onClick={e => setSelectedTime(e.target.value)}
+                                    >
+                                        {hour}
+                                    </button>
+                                </div>))}
+                        </div>
                     </div>
                 </div>
                 {/* a new div to display the comment input */}
                 <div className="row p-3">
+                    <h6 className="text-light p-3">5. Insert a comment * Optional</h6>
                     <textarea 
                         disabled={!selectedDoctor || !selectedDate || !selectedTime} 
                         className="form-control-lg shadow-sm bg-light" 
@@ -232,7 +237,7 @@ const AppointmentPage = () => {
                 </div>
             </form>
 
-            {/* An alert that is displayed only if appointmentSaved variable is true */}
+            {/* An alert that is displayed only if appointmentSaved variable is true. Then, will redirect the user to Home */}
             {appointmentSaved ? 
             <>
             <div className="alert alert-success" role="alert">
