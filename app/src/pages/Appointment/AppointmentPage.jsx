@@ -1,9 +1,12 @@
 import React from "react";
 // import useState and useEffect
 import { useState, useEffect } from "react";
+// import useNavigate and useLocation to pass data when moving through 
 import { useNavigate, useLocation } from 'react-router-dom';
 import "./AppointmentPage.css";
-// add passedDoctorId and passedCategoryId as optional parameters, in case we land to this page from the search page/doctor card button
+// import assets
+import checkedIcon from '../../assets/usability/calendar-check.svg';
+
 const AppointmentPage = () => {
 
     // useLocation is required in case we reach this page from the search doctors page. 
@@ -42,6 +45,7 @@ const AppointmentPage = () => {
         for (let hour = 9; hour <= 20; hour++) {
             const date = new Date();
             date.setHours(hour, 0, 0); // Set the hour and minutes in the Date object
+            // format the time using toLocaleTimeString with 4 digits
             const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             hours.push(formattedTime);
         }// choose how many elements(hours) we want to show in each row
@@ -155,9 +159,9 @@ const AppointmentPage = () => {
                 <h2 className="pt-5">Find and book an appointment</h2>
                 <h5>Then, you just have to wait you doctor's confirmation</h5>
             </div>
-            <form className="p-5 m-5 rounded shadow-lg" id="formId"> 
+            <form className="py-3 px-5 m-5 rounded shadow-lg" id="formId"> 
                 <div className="row pt-2">
-                    <h6 className="text-light p-2">1. Select a category</h6>
+                    <h6 className="text-light pb-2">1. Select a category</h6>
                     {/* use the onChange react callback to store the input value into the selectedCategory variable */}
                     <select defaultValue={null} 
                             className="form-select-lg mb-5 bg-light border-0 shadow-sm" 
@@ -167,7 +171,12 @@ const AppointmentPage = () => {
                         <option value={null}>Select category</option>
                         {/* a map function to check every category and add it to the dropdown as an option, with ID as both key and value props and value as the visible text */}
                         {categories.map(category => 
-                                    <option key={category.id} selected={passedCategoryId === category.id} value={category.id}>{category.value}</option>
+                                    <option 
+                                    key={category.id} 
+                                    selected={passedCategoryId === category.id} 
+                                    value={category.id}>
+                                        {category.value}
+                                    </option>
                                 )}
                     </select>
                 </div>
@@ -183,7 +192,12 @@ const AppointmentPage = () => {
                         <option value={null}>Select doctor</option>
                         {/* a map function to check every category and add it to the dropdown as an option, with ID as both key and value props and value as the visible text */}
                         {doctorsByCategory.map(doctor => 
-                                        <option key={doctor.id} selected={passedDoctorId === doctor.id} value={doctor.id}>{doctor.name} {doctor.surname}</option>
+                                        <option 
+                                        key={doctor.id} 
+                                        selected={passedDoctorId === doctor.id} 
+                                        value={doctor.id}>
+                                            {doctor.name} {doctor.surname}
+                                        </option>
                         )}
                     </select>
                 </div>
@@ -205,12 +219,12 @@ const AppointmentPage = () => {
                             {hoursGrid.map((row) => row.map((hour, index) => 
                                 <div className="col-md-4 p-2">
                                     <button 
-                                        type="button"
-                                        value={hour}                                             
-                                        id={index} 
-                                        key={index}
-                                        disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
-                                        className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"}                                         onClick={e => setSelectedTime(e.target.value)}
+                                    type="button"
+                                    value={hour}                                             
+                                    id={index} 
+                                    key={index}
+                                    disabled={!selectedDoctor || !selectedDate || doctorAppointmentsSlots.includes(hour)} 
+                                    className={selectedTime === hour ? "btn btn-primary w-50 shadow-sm" : "btn btn-light w-50 shadow-sm"}                                         onClick={e => setSelectedTime(e.target.value)}
                                     >
                                         {hour}
                                     </button>
@@ -222,17 +236,18 @@ const AppointmentPage = () => {
                 <div className="row p-3">
                     <h6 className="text-light p-3">5. Insert a comment * Optional</h6>
                     <textarea 
-                        disabled={!selectedDoctor || !selectedDate || !selectedTime} 
-                        className="form-control-lg shadow-sm bg-light" 
-                        placeholder="Leave a comment here" 
-                        onChange={e => setPatientNote(e.target.value)}
+                    disabled={!selectedDoctor || !selectedDate || !selectedTime} 
+                    className="form-control-lg shadow-sm bg-light" 
+                    placeholder="Leave a comment here" 
+                    onChange={e => setPatientNote(e.target.value)}
                     />
                 </div>
                 <div className="row pt-4">
                     <button 
-                        type="button" 
-                        className="btn btn-primary p-3" 
-                        onClick={e => sendForm()}>Add appointment
+                    type="button" 
+                    className="btn btn-primary p-3" 
+                    onClick={e => sendForm()}>
+                        Add appointment
                     </button>
                 </div>
             </form>
@@ -242,6 +257,11 @@ const AppointmentPage = () => {
             <>
             <div className="alert alert-success" role="alert">
                 Your appointment has been received, you have to wait your doctor to confirm it!
+                <br />
+                <img 
+                    src={checkedIcon} 
+                    alt="confirmed icon" 
+                />
             </div>
             </> 
             : <></>}

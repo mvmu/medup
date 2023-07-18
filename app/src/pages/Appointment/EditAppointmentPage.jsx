@@ -51,7 +51,7 @@ const EditAppointmentPage = () => {
             <div className="container p-5">
                 <div className="row">
                     <div className="alert alert-danger" role="alert">
-                    You didn't select any appointment, please come back to Home
+                    You didn't select any appointment, please come back to Home 
                         <div className="row pt-3 justify-content-center">
                             {/* button to go back */}
                             <button

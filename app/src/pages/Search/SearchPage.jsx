@@ -104,7 +104,7 @@ const SearchPage = () => {
         </div>
         {/* all doctors filtered / not filtered in a row */}
         <div className="row pt-3">
-          <DoctorsList doctors={filteredDoctors} />
+          <DoctorsList doctors={filteredDoctors} key={doctors}/>
         </div>
       </div>
     </>

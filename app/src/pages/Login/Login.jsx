@@ -62,10 +62,10 @@ const Login = () => {
                                     <h2 className="mb-5">Log in now</h2>
                                     <form>
                                         {/* create a list with "fake tabs" to simulate two different paths. Actually, it capture a boolean value instead of navigate */}
-                                        <ul className="nav nav-tabs nav-justified mb-3" role="tablist">
+                                        <ul className="nav nav-tabs nav-justified mb-3" role="tabpanel">
                                             {/* patient tab */}
                                             <li className="nav-item pointed" role="presentation">
-                                                <a 
+                                                <button 
                                                     className={!isDoctor ? "nav-link active" : "nav-link"} 
                                                     data-mdb-toggle="tab" 
                                                     onClick={e => setIsDoctor(false)} 
@@ -75,11 +75,11 @@ const Login = () => {
                                                     I'm a patient
                                                     <br/>
                                                     <img className="m-2" src={patient} alt="patient icon"/>
-                                                </a>
+                                                </button>
                                             </li>
                                             {/* doctor tab */}
                                             <li className="nav-item pointed" role="presentation">
-                                                <a 
+                                                <button 
                                                     className={isDoctor ? "nav-link active" : "nav-link"} 
                                                     data-mdb-toggle="tab" 
                                                     onClick={e => setIsDoctor(true)} 
@@ -89,7 +89,7 @@ const Login = () => {
                                                     I'm a doctor
                                                     <br/>
                                                     <img className="m-2" src={doctor} alt="doctor icon"/>
-                                                </a>
+                                                </button>
                                             </li>
                                         </ul>
                                         {/* Email input */}

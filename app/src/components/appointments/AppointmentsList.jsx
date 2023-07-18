@@ -40,7 +40,7 @@ const AppointmentsList = ({isDoctor}) => {
               </div>
               : <div className="row d-flex m-2 justify-content-center">
                     {appointments.map(appointment => 
-                      <AppointmentCard appointment={appointment} isDoctor={isDoctor}/>)
+                      <AppointmentCard appointment={appointment} isDoctor={isDoctor} key={appointment.id}/>)
                     }
               </div>
               }   

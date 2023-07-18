@@ -1,4 +1,5 @@
 import React from "react";
+// import component DoctorsCard
 import DoctorsCard from "./DoctorsCard";
 import "./DoctorsList.css";
 

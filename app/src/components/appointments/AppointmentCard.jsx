@@ -1,6 +1,8 @@
 import React from "react";
 // useNavigate is really important here, to manage appoinments correctly
 import { useNavigate } from "react-router-dom";
+// import useState to change the status of the card: expanded, !expanded
+import { useState } from "react";
 // import the card in order to populate the list
 import "./AppointmentCard.css";
 // import icons
@@ -8,11 +10,16 @@ import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';
 import pendingIcon from '../../assets/status_icons/pending.svg';
 import editIcon from '../../assets/usability/pen.svg';
+import upIcon from '../../assets/usability/up.svg'
+import downIcon from '../../assets/usability/down.svg'
 
 
 const AppointmentCard = ({appointment, isDoctor}) => {
     // useNavigate() in a constant to relocate window passing data through a function
     const navigate = useNavigate();
+    // useState to control the card dropdown 
+    const [expanded, setExpanded] = useState(false); 
+
 
     // define constants to decide what to be displayed
 
@@ -28,7 +35,10 @@ const AppointmentCard = ({appointment, isDoctor}) => {
     const time = `${appointment.appointment_time.slice(0,5)}`
     // constant to store the status
     const status = appointment.status
+    // constant to store the patient note
     const patientNote = appointment.patient_note
+    // constant to store the doctor note
+    const doctorNote = appointment.doctor_note
 
     // a function to navigate to a deeper level - manage the appointment passing the appointment data in the state
     function navigateToEdit(){
@@ -119,7 +129,45 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                                 </div>
                             </div>
                         </div>
-                    </div>                 
+                    </div>   
+                    {/* button to dropdown more info */}
+                    {!expanded && (
+                        <button
+                        className="btn btn custom mt-3"
+                        onClick={() => setExpanded(true)}
+                        >
+                            <img 
+                            src={downIcon} 
+                            alt="down icon" 
+                            />
+                        </button>
+                    )}
+                    {/* show the aditional info when expanded is true */}
+                    {expanded && (
+                        <div className="mt-3">
+                            {/* show doctor or patient note, depending on the user. Then, choose the color */}
+                            <h6>{isDoctor ? "Patient" : "Doctor"} note</h6>
+                            {isDoctor ? (
+                                <p className={patientNote === null || doctorNote === null ? "text-danger" : "text-muted"}>
+                                    {patientNote === null ? "No comments yet" : patientNote}
+                                </p>
+                                ) : (
+                                <p className={doctorNote === null ? "text-danger" : "text-muted"}>
+                                    {doctorNote === null ? "No comments yet" : doctorNote}
+                                </p>
+                                )}
+                            {/* button to turn to the initial state */}
+                            <button
+                                className="btn btn custom"
+                                onClick={() => setExpanded(false)}
+                            >
+                                <img 
+                                src={upIcon} 
+                                alt="up icon" 
+                                />
+                            </button>
+                        </div>
+                    )}              
                 </div>
             </div>
         </>

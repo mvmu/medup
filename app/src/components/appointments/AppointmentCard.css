@@ -11,3 +11,8 @@
     background-color: var(--color-primary30);
     border: none;
 }
+
+.custom:hover {
+    color: var(--color-black);
+    background-color: var(--color-primary30);
+}
