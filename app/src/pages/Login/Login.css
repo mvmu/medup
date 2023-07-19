@@ -1,3 +1,7 @@
+/* not scroll */
+.card {
+  overflow: hidden;
+}
 /* a style for the card */
 .cascading-right {
     margin-right: -50px;
@@ -19,8 +23,9 @@
     #pictureLogin {
       position: fixed;
       left: 30%;
-      top: 20%;
-      height: 20vw;
+      top: 14%;
+      height: 28vw;
+      opacity: 80%;
     }
   }
 

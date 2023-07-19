@@ -93,7 +93,9 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                             </div>
                             {/* column to contain the doctor/patient name and the time */}
                             <div className="col-md-8 d-flex flex-column justify-content-center align-items-center">
-                                <h5 className="card-title">{subtitle}</h5>
+                                <h5 className="card-title">
+                                    {isDoctor ? appointment.category : {subtitle}}
+                                </h5>
                                 <p className="card-text">{time}</p>
                                 {/* apply the function defineColor and defineIcon into the body of the card to personalize the label depending on the status */}                           
                             </div> 
@@ -148,12 +150,12 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                             {/* show doctor or patient note, depending on the user. Then, choose the color */}
                             <h6>{isDoctor ? "Patient" : "Doctor"} note</h6>
                             {isDoctor ? (
-                                <p className={patientNote === null || doctorNote === null ? "text-danger" : "text-muted"}>
-                                    {patientNote === null ? "No comments yet" : patientNote}
+                                <p className={patientNote === null || patientNote === "" ? "text-danger" : "text-muted"}>
+                                    {patientNote === null  || patientNote === "" ? "No comments yet" : patientNote}
                                 </p>
                                 ) : (
-                                <p className={doctorNote === null ? "text-danger" : "text-muted"}>
-                                    {doctorNote === null ? "No comments yet" : doctorNote}
+                                <p className={doctorNote === null || doctorNote === "" ? "text-danger" : "text-muted"}>
+                                    {doctorNote === null || doctorNote === "" ? "No comments yet" : doctorNote}
                                 </p>
                                 )}
                             {/* button to turn to the initial state */}

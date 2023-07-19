@@ -33,7 +33,7 @@ const Login = () => {
                     isDoctor : isDoctor
                   })
                 });
-            // if OK, it will change window, passing the data
+            // if OK, it will change and reload window, passing the data
             if(response.status === 200){
                 window.location.reload(false);
                 // if the authentication has failed (401), send an error message
@@ -51,9 +51,11 @@ const Login = () => {
             <section className="text-center text-lg-start">
                 {/* Jumbotron */}
                 <div className="container py-4">
+                    {/* welcome img */}
                     <div className="container p-5 d-flex justify-content-center">
                         <img src={title} alt="welcome" id="welcome"/>
                     </div>
+                    {/* login form */}
                     <div className="row g-0 pt-2 align-items-center">
                         <div className="col-lg-6 mb-5 mb-lg-0">
                             <div className="card cascading-right shadow-sm glassmorphic">
@@ -62,10 +64,10 @@ const Login = () => {
                                     <h2 className="mb-5">Log in now</h2>
                                     <form>
                                         {/* create a list with "fake tabs" to simulate two different paths. Actually, it capture a boolean value instead of navigate */}
-                                        <ul className="nav nav-tabs nav-justified mb-3" role="tabpanel">
+                                        <ul className="nav nav-tabs nav-justified mb-3" role="tablist">
                                             {/* patient tab */}
                                             <li className="nav-item pointed" role="presentation">
-                                                <button 
+                                                <a 
                                                     className={!isDoctor ? "nav-link active" : "nav-link"} 
                                                     data-mdb-toggle="tab" 
                                                     onClick={e => setIsDoctor(false)} 
@@ -75,11 +77,11 @@ const Login = () => {
                                                     I'm a patient
                                                     <br/>
                                                     <img className="m-2" src={patient} alt="patient icon"/>
-                                                </button>
+                                                </a>
                                             </li>
                                             {/* doctor tab */}
                                             <li className="nav-item pointed" role="presentation">
-                                                <button 
+                                                <a 
                                                     className={isDoctor ? "nav-link active" : "nav-link"} 
                                                     data-mdb-toggle="tab" 
                                                     onClick={e => setIsDoctor(true)} 
@@ -89,7 +91,7 @@ const Login = () => {
                                                     I'm a doctor
                                                     <br/>
                                                     <img className="m-2" src={doctor} alt="doctor icon"/>
-                                                </button>
+                                                </a>
                                             </li>
                                         </ul>
                                         {/* Email input */}
@@ -105,7 +107,6 @@ const Login = () => {
                                         <div className="form-outline mb-4">
                                             <label className="form-label">Password</label>
                                             <input type="password" 
-                                                    id="form3Example4" 
                                                     className="form-control" 
                                                     onChange={e => setInsertedPassword(e.target.value)}
                                             />
