@@ -2,8 +2,10 @@ import React from "react"
 // import useNavigate to send data from this page to another
 import { useNavigate } from "react-router-dom";
 import "./DoctorsCard.css"
-// import buttons
+// import assets
 import Button from '../button/Button'
+import Avatar from '../../assets/doctors/avatar.svg'
+
 
 const DoctorsCard = ({doctor}) => {
 
@@ -19,6 +21,8 @@ const DoctorsCard = ({doctor}) => {
                 <h4 className="card-header pt-3 border-0" id="cardTitle">{doctor.category_name}</h4>
                 <div className="card-body p-4">
                     <h5 key={doctor.id} className="card-title p-2">{doctor.name} {doctor.surname}</h5>
+                    <img src={Avatar} alt={doctor.name} />
+                    <br />
                     <Button 
                         className="btn btn-primary m-2 p-2"
                         text="Book an appointment"
