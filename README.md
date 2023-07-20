@@ -24,6 +24,8 @@ medup is a website developed with NodeJS, Express, ReactJS and Vite with the sco
    
    `USE medup;`
 
+5. Execute the content of postgres_db_setup.sql into pgAdmin query console to setup the necessary tables and initial data: doctors, patients, categories and status.
+
 ## Installation
 1. Open a terminal in the root folder of the project and run `npm install`
 2. Once the installation is completed, run the server with `node index`
