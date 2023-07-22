@@ -1,7 +1,9 @@
 import React from "react";
+// import usestate and useffect to work on doctors, categories and inputs
 import { useState, useEffect } from "react";
-import DoctorsList from "../../components/doctors/DoctorsList";
 import "./SearchPage.css";
+// import component
+import DoctorsList from "../../components/doctors/DoctorsList";
 // import assets 
 import SearchIcon from '../../assets/usability/search.svg'
 

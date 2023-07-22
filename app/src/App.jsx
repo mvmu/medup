@@ -1,7 +1,10 @@
 import React from "react";
 // import useState and useEffect to change state and set side effects to the elements
 import { useState, useEffect } from "react";
-import './App.css';
+// import a very important component, userSessionContext, to keep the data/context of the user
+import UserSessionContext from './context/UserSessionContext';
+//import router 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 //import pages
 import Home from './pages/Home/Home/';
 import SearchPage from './pages/Search/SearchPage';
@@ -9,12 +12,12 @@ import AppointmentPage from './pages/Appointment/AppointmentPage';
 import EditAppointmentPage from './pages/Appointment/EditAppointmentPage';
 import HistoryPage from './pages/Appointment/HistoryPage';
 import Login from './pages/Login/Login'
+import NotFound from "./pages/Home/NotFound";
+// import assets
 import NavBar from './components/navbar/NavBar';
 import Footer from "./components/footer/Footer";
-// import a very important component, userSessionContext, to keep the data/context of the user
-import UserSessionContext from './context/UserSessionContext';
-//import router 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import './App.css';
+
 
 // add passedDoctorId and passedCategoryId as optional parameters, in case we land to this page from the search page/doctor card button
 const App = () => {
@@ -60,12 +63,12 @@ const App = () => {
                     <Route path="/edit" element={<EditAppointmentPage />} />
                     <Route path="/appointment" element={<AppointmentPage />} />
                     <Route path="/history" element={<HistoryPage />} />
-                    {/* 404 */}
-                    {/* <Route path='*' element={<NotFound />} /> */}
                     {/* if its not a doctor, it will also include the Search Page */}
                     { !loggedUser.isDoctor && 
                         <Route path="/search" element={<SearchPage />} />    
                     }
+                    {/* 404 */}
+                    <Route path='*' element={<NotFound />} />
                 </Routes>
                 <Footer />
             </Router>

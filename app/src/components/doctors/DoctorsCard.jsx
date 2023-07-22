@@ -1,12 +1,11 @@
 import React from "react"
-// import useNavigate to send data from this page to another
+// import useNavigate to move from this page to another, passing and updating data
 import { useNavigate } from "react-router-dom";
-import "./DoctorsCard.css"
 // import assets
 import Button from '../button/Button'
 import Avatar from '../../assets/doctors/avatar.svg'
 
-
+// const doctorsCard passed with doctor
 const DoctorsCard = ({doctor}) => {
 
     const navigate = useNavigate();

@@ -3,7 +3,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import useNavigate to change window passing data 
 import { useNavigate } from "react-router-dom";
-import "./EditAppointmentPanel.css";
 // import assets
 import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';

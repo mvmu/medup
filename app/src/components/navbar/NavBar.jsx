@@ -1,6 +1,10 @@
+// import navlink to navigate dynamically through links
 import { NavLink as Link } from 'react-router-dom';
+// uselocation to move through
 import { useLocation } from 'react-router-dom';
+// import usecontext to get the environment | usestate and useffect to make changes on the menu
 import { useContext, useState, useEffect } from 'react';
+//  import user session context to adapt what to display depending on the user
 import UserSessionContext from '../../context/UserSessionContext';
 import './NavBar.css';
 // import assets
@@ -78,14 +82,14 @@ function NavBar() {
                     Search
                   </Link>
                 </li>
-                <li className="nav-item onMobile">
-                  <Link className="nav-link" aria-current="page" to="/history">
-                    Appointment history
-                  </Link>
-                </li>
                 <li className={!isDoctor ? "nav-item" : "d-none"}>
                   <Link className="nav-link" aria-current="page" to="/appointment">
                     Get appointment
+                  </Link>
+                </li>
+                <li className="nav-item onMobile">
+                  <Link className="nav-link" aria-current="page" to="/history">
+                    Appointment history
                   </Link>
                 </li>
               </div>

@@ -6,3 +6,12 @@
     color: white;
     border-radius: 0 0 1.5em 1.5em;
 }
+
+#userWelcome h2 {
+    color: white;
+}
+
+#cardInfoUser {
+    border-color: white;
+    background-color: (--color-primary30);
+}

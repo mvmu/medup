@@ -1,0 +1,12 @@
+#notFoundPage {
+    height: 100%;
+}
+
+#row404 {
+    background-color: white;
+    border-radius: 2em;
+}
+
+#row404 h1 {
+    color: var(--color-primary100);
+}

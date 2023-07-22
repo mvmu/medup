@@ -1,26 +1,29 @@
 import React from "react";
+// import usestate and useffect to apply on the element appointments
 import { useState, useEffect } from "react";
+// import components
 import AppointmentCard from "./AppointmentCard";
-import "./AppointmentsList.css";
 
 const AppointmentsList = ({isDoctor}) => {
-
+  // const to apply changes on appointments
   const [appointments, setAppointments] = useState([]);
 
   const getAppointments = async () => {
     try {
+      // fetch data with get method, applying isDoctor boolean
       const response = await fetch(`http://localhost:4000/${isDoctor ? "doctor" : "patient"}/appointments`, {
         method : "GET",
         credentials: 'include',
       });
       const data = await response.json();
+      // set appointments
       setAppointments(data);
     }
     catch (error) {
       console.log(error)
     }
   }
-  
+  // apply useffect to the appointments
   useEffect(() => {
     getAppointments();
   }, [])

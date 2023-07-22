@@ -1,7 +1,6 @@
 import React from "react";
-// import component DoctorsCard
+// import component 
 import DoctorsCard from "./DoctorsCard";
-import "./DoctorsList.css";
 
 // userId as a parameter to pass the user info. In case of saving an appointment, the data will be stored for this id
 const DoctorsList = ({doctors}) => {

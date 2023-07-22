@@ -1,4 +1,6 @@
+// import navlink to navigate through links
 import { NavLink as Link } from 'react-router-dom';
+// use the context to determine the environment, doctor or patient
 import { useContext, useState } from 'react';
 import UserSessionContext from '../../context/UserSessionContext';
 import './Footer.css';
@@ -23,14 +25,14 @@ function Footer() {
                     Search
                   </Link>
                 </li>
-                <li className={isDoctor ? "nav-item" : "d-none"}>
-                  <Link className="nav-link" aria-current="page" to="/manage">
-                    Appointment history
-                  </Link>
-                </li>
                 <li className={!isDoctor ? "nav-item" : "d-none"}>
                   <Link className="nav-link" aria-current="page" to="/appointment">
                     Get appointment
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" aria-current="page" to="/history">
+                    Appointment history
                   </Link>
                 </li>
               </div>

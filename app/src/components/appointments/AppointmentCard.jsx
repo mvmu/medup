@@ -106,7 +106,7 @@ const AppointmentCard = ({appointment, isDoctor, readOnly}) => {
                             </div> 
                         </div>                      
                         {/* new row to contain the edit button and the status */}
-                        <div className="row mt-3 justify-content-start">
+                        <div className="row mt-3 justify-content-center">
                             {/* column to contain edit button */}
                             {!readOnly && <div className="col-md-4 d-flex justify-content-center">
                                 <button  

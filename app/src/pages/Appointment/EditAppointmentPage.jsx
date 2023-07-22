@@ -1,7 +1,6 @@
 import React from "react";
 // import useNavigate and useLocation to change location passing data
 import { useNavigate, useLocation } from 'react-router-dom';
-import "./EditAppointmentPage.css";
 // import component
 import EditAppointmentPanel from "../../components/appointments/EditAppointmentPanel.jsx";
 // import assets

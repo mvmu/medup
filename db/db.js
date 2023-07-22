@@ -79,8 +79,12 @@ async function getUserInfo(sessionUser) {
     let sql = connect();
         try{
             //data variable containing a query result depending on the isDoctor boolean variable value(if is doctor, fetch doctor info | If not, fetch patient info). 
-            let data = sessionUser.isDoctor ? await sql`SELECT name, surname, email, medical_center FROM doctor WHERE id = ${sessionUser.userId}`
-            : await sql`SELECT name, surname, email, birth_date, gender FROM patient WHERE id = ${sessionUser.userId}`;
+            let data = sessionUser.isDoctor ? await sql`SELECT name, surname, email, medical_center, category.value as category 
+            FROM doctor INNER JOIN category ON doctor.category_id = category.id
+            WHERE doctor.id = ${sessionUser.userId}`
+            : await sql`SELECT name, surname, email, birth_date, gender 
+            FROM patient 
+            WHERE id = ${sessionUser.userId}`;
 
             //the query always return an array, but in this case we'll always have a single result. So we return the first and only element of the array
             return data[0];

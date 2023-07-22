@@ -8,3 +8,5 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+// the utility of this page is just to create the root, that will be rendered in App

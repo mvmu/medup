@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+// import user session context to get the environment
 import UserSessionContext from '../../context/UserSessionContext';
+// import assets
 import AppointmentCard from "../../components/appointments/AppointmentCard";
 import "./HistoryPage.css";
 
@@ -40,15 +42,23 @@ const HistoryPage = () => {
     ));
   };
 
+  const showAlert = (appointmentStatus) => {
+    return (
+        <div className="alert alert-primary m-5 p-3" role="alert">
+            {`No ${appointmentStatus} appointments found`}
+        </div> 
+    )
+  }
+
   return (
     <>
-        <div className="accordion pt-5 mt-2" id="accordion">
+        <div className="accordion pt-5 mt-2 justify-content-center" id="accordion">
             {/* title and subtitle */}
             <h2 className="pt-5">Your appointment history so far</h2>
             <h5 className="pb-5">Just click on the status</h5>
-            <div className="card">
-                {/* pending section */}
-                <div className="card-header" id="headingPending">
+            {/* pending section */}
+            <div className="card customBorder">
+                <div className="card-header px-0" id="headingPending">
                     <h5 className="mb-0">
                         <button 
                         className="btn btn" 
@@ -67,16 +77,16 @@ const HistoryPage = () => {
                 className="collapse" 
                 aria-labelledby="headingPending" 
                 data-parent="#accordion">
-                    <div className="card-body row justify-content-center">
-                        {pendingAppointments.map(
+                    <div className="card-body row justify-content-center px-5 mx-5">
+                        {pendingAppointments.length > 0 ? pendingAppointments.map(
                             appointment => <AppointmentCard key={appointment.id} appointment={appointment} isDoctor={isDoctor} readOnly />
-                        )}
+                        ) : showAlert('pending')}
                     </div>
                 </div>
             </div>
             {/* confirmed section */}
-            <div className="card">
-                <div className="card-header" id="headingConfirmed">
+            <div className="card customBorder">
+                <div className="card-header px-0" id="headingConfirmed">
                     <h5 className="mb-0">
                         <button 
                         className="btn btn" 
@@ -91,16 +101,16 @@ const HistoryPage = () => {
                 </div>
                 {/* collapsing */}
                 <div id="collapseConfirmed" className="collapse" aria-labelledby="headingConfirmed" data-parent="#accordion">
-                    <div className="card-body row justify-content-center">
-                        {confirmedAppointments.map(
+                    <div className="card-body row justify-content-center px-5 mx-5">
+                        {confirmedAppointments.length > 0 ? confirmedAppointments.map(
                             appointment => <AppointmentCard key={appointment.id} appointment={appointment} isDoctor={isDoctor} readOnly />
-                        )}
+                        ) : showAlert('confirmed')}
                     </div>
                 </div>
             </div>
             {/* completed section */}
-            <div className="card">
-                <div className="card-header" id="headingCompleted">
+            <div className="card customBorder">
+                <div className="card-header px-0" id="headingCompleted">
                     <h5 className="mb-0">
                         <button 
                         className="btn btn" 
@@ -119,16 +129,16 @@ const HistoryPage = () => {
                 className="collapse" 
                 aria-labelledby="headingCompleted" 
                 data-parent="#accordion">
-                    <div className="card-body row justify-content-center">
-                        {completedAppointments.map(
+                    <div className="card-body row justify-content-center px-5 mx-5">
+                        {completedAppointments.length > 0 ? completedAppointments.map(
                             appointment => <AppointmentCard key={appointment.id} appointment={appointment} isDoctor={isDoctor} readOnly />
-                        )}
+                        ) : showAlert('completed')}
                     </div>
                 </div>
             </div>
             {/* cancelled section */}
-            <div className="card">
-                <div className="card-header" id="headingCancelled">
+            <div className="card customBorder">
+                <div className="card-header px-0" id="headingCancelled">
                     <h5 className="mb-0">
                         <button 
                         className="btn btn" 
@@ -147,10 +157,10 @@ const HistoryPage = () => {
                 className="collapse" 
                 aria-labelledby="headingCancelled" 
                 data-parent="#accordion">
-                    <div className="card-body row justify-content-center">
-                        {deletedAppointments.map(
+                    <div className="card-body row justify-content-center px-5 mx-5">
+                        {deletedAppointments.length > 0 ? deletedAppointments.map(
                             appointment => <AppointmentCard key={appointment.id} appointment={appointment} isDoctor={isDoctor} readOnly />
-                        )}
+                        ) : showAlert('cancelled')}
                     </div>
                 </div>
             </div>
