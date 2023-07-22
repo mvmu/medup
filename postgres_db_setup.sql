@@ -107,6 +107,7 @@ INSERT INTO public.status (value) VALUES
     ('Completed');
 
 
+-- doctor records
 INSERT INTO public.doctor (category_id, name, surname, medical_center, email, password) VALUES
 (14, 'Hans', 'Schmidt', 'Hauptstraße 10, 10115 Berlin, Germany', 'hans.schmidt@doctor.com', 'password1'),
 (7, 'Sophie', 'Dubois', 'Rue de la Paix 5, 75002 Paris, France', 'sophie.dubois@doctor.com', 'password2'),
@@ -209,7 +210,7 @@ INSERT INTO public.doctor (category_id, name, surname, medical_center, email, pa
 (12, 'Lara', 'Silva', 'Avenida da Liberdade 10, 1250-096 Lisbon, Portugal', 'lara.silva@doctor.com', 'password99'),
 (1, 'David', 'Müller', 'Hauptstraße 1, 10178 Berlin, Germany', 'david.muller@doctor.com', 'password100');
 
-
+-- patients records
 INSERT INTO public.patient (name, surname, email, password, birth_date, gender) VALUES
 ('Liam', 'Smith', 'liam.smith@patient.com', 'password1', '1990-05-15', 'M'),
 ('Emma', 'Johnson', 'emma.johnson@patient.com', 'password2', '1985-09-21', 'F'),
@@ -222,5 +223,12 @@ INSERT INTO public.patient (name, surname, email, password, birth_date, gender) 
 ('Oliver', 'Walker', 'oliver.walker@patient.com', 'password9', '1990-08-27', 'M'),
 ('Isabella', 'Harris', 'isabella.harris@patient.com', 'password10', '1995-04-17', NULL);
 
-
-END;
+-- appointment examples for user with id 1
+INSERT INTO appointment (patient_id, doctor_id, status_id, appointment_date, appointment_time, patient_note, doctor_note) 
+VALUES 
+(1, 1, 1, '2023-09-01', '11:00', 'patient test note', 'doctor test note'),
+(1, 2, 2, '2023-09-02', '12:00', 'patient test note', 'doctor test note'),
+(1, 3, 3, '2023-09-03', '16:00', 'patient test note', 'doctor test note'),
+(1, 4, 4, '2023-09-04', '09:00', 'patient test note', 'doctor test note'),
+(1, 5, 2, '2023-09-05', '11:30', 'patient test note', 'doctor test note'),
+(1, 6, 2, '2023-09-06', '12:45', 'patient test note', 'doctor test note')

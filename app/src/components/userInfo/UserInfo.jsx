@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 // use navlink to include inside the buttons the route to the desired page
 import { NavLink as Link } from 'react-router-dom';
+import { BE_URL } from "../../constants.js";
 import "./UserInfo.css";
 // import assets
 import Button from "../button/Button";
@@ -14,8 +15,9 @@ const UserInfo = ({isDoctor}) => {
     const getUserInfo = async () => {
       try {
         // fetch to the url containing the user and the dynamic value of user id
-        const response = await fetch(`http://localhost:4000/user`, {
+        const response = await fetch(`${BE_URL}/user`, {
           method : "GET",
+          headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
           credentials: 'include'
         });
         // wait the response and store it as data with json format

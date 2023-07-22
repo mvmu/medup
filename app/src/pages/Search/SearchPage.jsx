@@ -1,6 +1,7 @@
 import React from "react";
 // import usestate and useffect to work on doctors, categories and inputs
 import { useState, useEffect } from "react";
+import { BE_URL } from "../../constants.js";
 import "./SearchPage.css";
 // import component
 import DoctorsList from "../../components/doctors/DoctorsList";
@@ -18,7 +19,7 @@ const SearchPage = () => {
   // constant to get all the doctors
   const getDoctors = async () => {
     try {
-      const response = await fetch("http://localhost:4000/doctors");
+      const response = await fetch(`${BE_URL}/doctors`);
       const data = await response.json();
       setDoctors(data);
     } catch (error) {
@@ -28,7 +29,7 @@ const SearchPage = () => {
 
   const getCategories = async () => {
     try {
-        const response = await fetch("http://localhost:4000/categories");
+        const response = await fetch(`${BE_URL}/categories`);
         const data = await response.json();
         setCategories(data);
     } catch (error) {

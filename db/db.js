@@ -1,13 +1,7 @@
 const postgres = require("postgres");
 
 function connect(){
-    return postgres({
-        host : "localhost",
-        port : 5433,
-        database : "medup",
-        user : "postgres",
-        password : "root"
-    });
+    return postgres(process.env["DB_URL"]);
 }
 // All the functions will be managed in an asyncronous way, as it is a DB connection
 
@@ -22,7 +16,7 @@ async function logIn({email,password,isDoctor}) {
         // return the variable (id)
         return userId[0];
     } catch(error) {
-        console.log("an error occurred trying to fetch the id");
+                console.log("an error occurred trying to fetch the id");
         return null;
     }
 

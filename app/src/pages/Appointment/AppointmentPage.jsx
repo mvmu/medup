@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import useNavigate and useLocation to pass data when moving through 
 import { useNavigate, useLocation } from 'react-router-dom';
+import { BE_URL } from "../../constants.js";
 import "./AppointmentPage.css";
 // import assets
 import checkedIcon from '../../assets/usability/calendar-check.svg';
@@ -82,7 +83,7 @@ const AppointmentPage = () => {
     // a function to fetch categories from db using middleware url
     const getCategories = async () => {
         try {
-          const response = await fetch("http://localhost:4000/categories");
+          const response = await fetch(`${BE_URL}/categories`);
           // the response from the db will be stored into the constant data
           const data = await response.json();
           //apply the setter function to the result
@@ -97,7 +98,7 @@ const AppointmentPage = () => {
     // a function to fetch categories from DB using middleware url
     const getDoctorsByCategory = async (categoryId) => {
             try {
-            const response = await fetch(`http://localhost:4000/doctors/${categoryId}`);
+            const response = await fetch(`${BE_URL}/doctors/${categoryId}`);
             // the response from the DB will be stored into the constant data
             const data = await response.json();
             //apply the setter function to the result
@@ -112,7 +113,7 @@ const AppointmentPage = () => {
     // a function to fetch occupied time slots from DB 
     const getOccupiedSlots = async (doctorId, date) => {
         try {
-        const response = await fetch(`http://localhost:4000/appointments/occupied/${doctorId}/${date}`);
+        const response = await fetch(`${BE_URL}/appointments/occupied/${doctorId}/${date}`);
         // the response from the db will be stored into the constant data
         const data = await response.json();
         //apply the setter function to the result
@@ -127,13 +128,11 @@ const AppointmentPage = () => {
     async function sendForm() {
         try {
             // fetch the url
-            const response = await fetch("http://localhost:4000/appointments", {
+            const response = await fetch(`${BE_URL}/appointments`, {
                 method : "POST",
                 // if this key is not passed with include as a value, the session won't be recognized in the backend
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                  },
+                headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     doctor_id: selectedDoctor,
                     appointment_date: selectedDate,

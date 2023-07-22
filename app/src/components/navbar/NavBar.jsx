@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 //  import user session context to adapt what to display depending on the user
 import UserSessionContext from '../../context/UserSessionContext';
+import { BE_URL } from "../../constants.js";
 import './NavBar.css';
 // import assets
 import logo from '../../assets/brand/logo.svg';
@@ -34,8 +35,9 @@ function NavBar() {
   async function logout() {
     try {
       console.log('doing logout!');
-      fetch('http://localhost:4000/logout', {
+      fetch(`${BE_URL}/logout`, {
         method: 'GET',
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
         credentials: 'include'
       }).then(() => {
         window.location.reload(true);

@@ -1,6 +1,7 @@
 import React from "react";
 // import useState to add state to username,password,isDoctor and error message
 import { useState } from "react";
+import { BE_URL } from "../../constants.js";
 import "./Login.css";
 // import assets
 import doctor from '../../assets/usability/doctor.svg';
@@ -21,12 +22,10 @@ const Login = () => {
     async function loginUser() {
         try {
             // fetch the url
-            const response = await fetch("http://localhost:4000/login", {
+            const response = await fetch(`${BE_URL}/login`, {
                 method : "POST",
                 credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json",
-                  },
+                headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     email : insertedUsername,
                     password : insertedPassword,

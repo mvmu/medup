@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import components
 import AppointmentCard from "./AppointmentCard";
+import { BE_URL } from "../../constants.js";
 
 const AppointmentsList = ({isDoctor}) => {
   // const to apply changes on appointments
@@ -11,8 +12,9 @@ const AppointmentsList = ({isDoctor}) => {
   const getAppointments = async () => {
     try {
       // fetch data with get method, applying isDoctor boolean
-      const response = await fetch(`http://localhost:4000/${isDoctor ? "doctor" : "patient"}/appointments`, {
+      const response = await fetch(`${BE_URL}/${isDoctor ? "doctor" : "patient"}/appointments`, {
         method : "GET",
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
         credentials: 'include',
       });
       const data = await response.json();

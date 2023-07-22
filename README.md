@@ -30,6 +30,6 @@ medup is a website developed with NodeJS, Express, ReactJS and Vite with the sco
 1. Open a terminal in the root folder of the project and run `npm install`
 2. Once the installation is completed, run the server with `node index`
 3. Open a new terminal and go to the `/app` sub-directory of the project and run `npm install`
-4. Once the installation is completed, run the webapp with ´npm run dev´
-5. Your website should be available at the address [localhost:5173](http://localhost:5173)
+4. Once the installation is completed, run the webapp with ´npm run serve`
+5. Your website should be available at the address [localhost:8000](http://localhost:8000)
 

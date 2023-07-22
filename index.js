@@ -22,6 +22,9 @@ const {logIn, getTableData, findTimeSlotsByDoctorAndDate, findDoctorsByCategory,
 //constant to apply into the key 'secret', when creating 'use' middleware for storing sessions
 const SECRET = "cei-final-project";
 
+const isProd = () => {
+    return process.env["PROD"] === "true";
+}
 
 // USE MIDDLEWARE
 // middleware to use body-parser
@@ -33,25 +36,62 @@ server.use(bodyParser.json());
 // middleware to use cookies
 server.use(cookieParser(SECRET));
 
+var whitelist = [
+    "https://medup-fe.onrender.com", 
+    "http://localhost:5173", 
+    "http://localhost:4173", 
+    "http://localhost:8000" 
+]
+
 //middleware to avoid CORS policy issues
 server.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}));
+    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+    credentials: true,
+    origin: function(origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  }));
+
+
+  const redis = require("redis");
+  const RedisStore = require("connect-redis").default;
+  const redisClient = redis.createClient({
+    url: process.env["REDIS_HOST"],});
+    redisClient.connect().catch(console.error);
+    redisClient.on('error', (err) => console.log(`Fail to connect with redis. ${err}`));
+    redisClient.on('connect', () => console.log('Successful to connect with redis'));
+
+
+  var sessionOptions = { 
+    secret : SECRET,
+    store: new RedisStore({client: redisClient}),
+    resave: true,
+    saveUninitialized: true,
+    proxy: true,
+    cookie: {
+        sameSite: isProd() ? 'none' : false,
+        secure: isProd(),
+        httpOnly: isProd(),
+        maxAge: 1000 * 60,
+    }
+};
+
 
 // middleware to store session, using express-session library
-server.use(session({ 
-    secret : SECRET,
-    resave : true,
-    saveUninitialized : true,
-    cookie: {
-        secure: false
-    }
-}));
+server.use(session(sessionOptions));
+
+server.enable('trust proxy');
+
+server.set('trust proxy', 1)
 
 // GET ENDPOINTS
 // endpoint to get the logged user id
 server.get("/getUserSession", (request,response) => { 
+    console.log(request.session);
     if(request.session.sessionUser) {
         response.send(request.session.sessionUser);
     } else {
@@ -139,7 +179,7 @@ server.post("/login", async (request, response) => {
         console.log(`user with id ${userId} logged successfully`);
         // store the logged user ID into the session
         request.session.sessionUser = {userId, isDoctor};
-        response.sendStatus(200);
+        response.send(request.session.sessionID);
     }else {
         response.sendStatus(401)
     }
@@ -167,7 +207,5 @@ server.put("/appointment/cancel/:appointment_id", async (request, response) => {
         response.sendStatus(400);
     }
 })
-
-
 
 server.listen(4000);

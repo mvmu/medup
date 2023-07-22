@@ -6,7 +6,7 @@ import UserSessionContext from './context/UserSessionContext';
 //import router 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 //import pages
-import Home from './pages/Home/Home/';
+import Home from './pages/Home/Home';
 import SearchPage from './pages/Search/SearchPage';
 import AppointmentPage from './pages/Appointment/AppointmentPage';
 import EditAppointmentPage from './pages/Appointment/EditAppointmentPage';
@@ -16,6 +16,7 @@ import NotFound from "./pages/Home/NotFound";
 // import assets
 import NavBar from './components/navbar/NavBar';
 import Footer from "./components/footer/Footer";
+import { BE_URL } from "./constants.js";
 import './App.css';
 
 
@@ -29,8 +30,9 @@ const App = () => {
         if (!loggedUser.userId) {
             try {
                 // fetch to the url containing the user and the dynamic value of user id
-                const response = await fetch(`http://localhost:4000/getUserSession`, {
+                const response = await fetch(`${BE_URL}/getUserSession`, {
                     method: "GET",
+                    headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                     credentials: "include",
                 });
                 // wait the response and store it as data with json format

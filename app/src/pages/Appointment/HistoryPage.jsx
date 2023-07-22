@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import UserSessionContext from '../../context/UserSessionContext';
 // import assets
 import AppointmentCard from "../../components/appointments/AppointmentCard";
+import { BE_URL } from "../../constants.js";
 import "./HistoryPage.css";
 
 const HistoryPage = () => {
@@ -16,8 +17,9 @@ const HistoryPage = () => {
 
   const getAppointments = async () => {
     try {
-      const response = await fetch("http://localhost:4000/appointments/history", {
+      const response = await fetch(`${BE_URL}/appointments/history`, {
         method: "GET",
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
         credentials: 'include',
       });
       const data = await response.json();

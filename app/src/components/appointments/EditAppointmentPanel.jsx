@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import useNavigate to change window passing data 
 import { useNavigate } from "react-router-dom";
+import { BE_URL } from "../../constants.js";
 // import assets
 import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';
@@ -54,7 +55,7 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
     // a function to fetch occupied time slots from DB 
     const getOccupiedSlots = async (doctorId, date) => {
         try {
-        const response = await fetch(`http://localhost:4000/appointments/occupied/${doctorId}/${date}`);
+        const response = await fetch(`${BE_URL}/appointments/occupied/${doctorId}/${date}`);
         // the response from the db will be stored into the constant data
         const data = await response.json();
         //apply the setter function to the result
@@ -97,13 +98,11 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
      async function update() {
         try {
             // fetch the url
-            const response = await fetch("http://localhost:4000/appointment/update", {
+            const response = await fetch(`${BE_URL}/appointment/update`, {
                 method : "PUT",
                 // if this key is not passed with include as a value, the session won't be recognized in the backend
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                  },
+                headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     appointment_id: appointment.id,
                     new_date: changedDate,
@@ -130,13 +129,11 @@ const EditAppointmentPanel = ({appointment, isDoctor}) => {
      async function cancel() {
         try {
             // fetch the url
-            const response = await fetch(`http://localhost:4000/appointment/cancel/${appointment.id}`, {
+            const response = await fetch(`${BE_URL}/appointment/cancel/${appointment.id}`, {
                 method : "PUT",
                 // if this key is not passed with include as a value, the session won't be recognized in the backend
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                  },
+                headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     appointment_id: appointment.id,
                     // we must modify the object status id value as 3 (cancelled)
