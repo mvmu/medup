@@ -25,7 +25,7 @@ function Footer() {
                 </li>
                 <li className={isDoctor ? "nav-item" : "d-none"}>
                   <Link className="nav-link" aria-current="page" to="/manage">
-                    Manage appointments
+                    Appointment history
                   </Link>
                 </li>
                 <li className={!isDoctor ? "nav-item" : "d-none"}>

@@ -7,6 +7,7 @@ import Home from './pages/Home/Home/';
 import SearchPage from './pages/Search/SearchPage';
 import AppointmentPage from './pages/Appointment/AppointmentPage';
 import EditAppointmentPage from './pages/Appointment/EditAppointmentPage';
+import HistoryPage from './pages/Appointment/HistoryPage';
 import Login from './pages/Login/Login'
 import NavBar from './components/navbar/NavBar';
 import Footer from "./components/footer/Footer";
@@ -47,26 +48,25 @@ const App = () => {
         getUserSession();
     }, [loggedUser])
 
-
     return (
         loggedUser.userId ?  
+        // set the context, depending on the userId
         <UserSessionContext.Provider value={loggedUser} >
             <Router>
                 <NavBar />
-                { loggedUser.isDoctor ? 
-                    <Routes>
-                        <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
-                        <Route path="/edit" element={<EditAppointmentPage />} />
-                        <Route path="/appointment" element={<AppointmentPage />} />
-                    </Routes>
-                :
                 <Routes>
-                <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
-                <Route path="/edit" element={<EditAppointmentPage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/appointment" element={<AppointmentPage />} />
+                    {/* common routes */}
+                    <Route path="/" element={<Home isDoctor={loggedUser.isDoctor}/>} />
+                    <Route path="/edit" element={<EditAppointmentPage />} />
+                    <Route path="/appointment" element={<AppointmentPage />} />
+                    <Route path="/history" element={<HistoryPage />} />
+                    {/* 404 */}
+                    {/* <Route path='*' element={<NotFound />} /> */}
+                    {/* if its not a doctor, it will also include the Search Page */}
+                    { !loggedUser.isDoctor && 
+                        <Route path="/search" element={<SearchPage />} />    
+                    }
                 </Routes>
-                }
                 <Footer />
             </Router>
       </UserSessionContext.Provider>

@@ -9,12 +9,13 @@ import "./AppointmentCard.css";
 import completedIcon from '../../assets/status_icons/completed.svg';
 import confirmedIcon from '../../assets/status_icons/confirmed.svg';
 import pendingIcon from '../../assets/status_icons/pending.svg';
+import cancelledIcon from '../../assets/status_icons/cancel.svg';
 import editIcon from '../../assets/usability/pen.svg';
 import upIcon from '../../assets/usability/up.svg'
 import downIcon from '../../assets/usability/down.svg'
 
 
-const AppointmentCard = ({appointment, isDoctor}) => {
+const AppointmentCard = ({appointment, isDoctor, readOnly}) => {
     // useNavigate() in a constant to relocate window passing data through a function
     const navigate = useNavigate();
     // useState to control the card dropdown 
@@ -53,7 +54,9 @@ const AppointmentCard = ({appointment, isDoctor}) => {
             case "Confirmed":
                 return "var(--color-utility-success)";
             case "Pending":
-                return "var(--bg-custom)"
+                return "var(--bg-custom)";
+            case "Cancelled":
+                return "var(--color-utility-danger)"
             default:
                 return "white";
         }
@@ -68,6 +71,8 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                 return confirmedIcon;
             case "Pending":
                 return pendingIcon;
+            case "Cancelled":
+                return cancelledIcon;
             default:
                 return null;
         }
@@ -94,7 +99,7 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                             {/* column to contain the doctor/patient name and the time */}
                             <div className="col-md-8 d-flex flex-column justify-content-center align-items-center">
                                 <h5 className="card-title">
-                                    {isDoctor ? appointment.category : {subtitle}}
+                                    {isDoctor ? appointment.category : subtitle }
                                 </h5>
                                 <p className="card-text">{time}</p>
                                 {/* apply the function defineColor and defineIcon into the body of the card to personalize the label depending on the status */}                           
@@ -103,7 +108,7 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                         {/* new row to contain the edit button and the status */}
                         <div className="row mt-3 justify-content-start">
                             {/* column to contain edit button */}
-                            <div className="col-md-4 d-flex justify-content-center">
+                            {!readOnly && <div className="col-md-4 d-flex justify-content-center">
                                 <button  
                                     type="button" 
                                     id="buttonEdit"
@@ -116,7 +121,7 @@ const AppointmentCard = ({appointment, isDoctor}) => {
                                         alt="edit icon" 
                                     />
                                 </button>
-                            </div>
+                            </div>}
                             {/* column to contain status label */}
                             <div className="col-md-8">
                                 <div 

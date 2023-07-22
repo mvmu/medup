@@ -17,7 +17,7 @@ const cookieParser = require('cookie-parser');
 const server = express();
 
 //constant to import the functions from the DB configuration
-const {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, cancelAppointment} = require("./db/db");
+const {logIn, getTableData, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, getHistoryData, cancelAppointment} = require("./db/db");
 
 //constant to apply into the key 'secret', when creating 'use' middleware for storing sessions
 const SECRET = "cei-final-project";
@@ -76,6 +76,14 @@ server.get("/patient/appointments", async (request, response) => {
 server.get("/appointments/occupied/:doctorId/:date", async (request, response) => {
     // a variable to store all the occupied time slots from a doctor and a date
     let result = await findTimeSlotsByDoctorAndDate(request.params.doctorId, request.params.date);
+    //result is the body 
+    response.send(result);
+});
+
+server.get("/appointments/history", async (request, response) => {
+    // constant idToQuery to search into the right id column, based on the user session role
+    const idToQuery = request.session.sessionUser.isDoctor ? 'doctor_id' : 'patient_id';
+    let result = await getHistoryData(idToQuery, request.session.sessionUser.userId);
     //result is the body 
     response.send(result);
 });

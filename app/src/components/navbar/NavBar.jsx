@@ -78,9 +78,9 @@ function NavBar() {
                     Search
                   </Link>
                 </li>
-                <li className={isDoctor ? "nav-item onMobile" : "d-none"}>
-                  <Link className="nav-link" aria-current="page" to="/manage">
-                    Manage appointments
+                <li className="nav-item onMobile">
+                  <Link className="nav-link" aria-current="page" to="/history">
+                    Appointment history
                   </Link>
                 </li>
                 <li className={!isDoctor ? "nav-item" : "d-none"}>

@@ -121,26 +121,43 @@ async function getTableData(tableName){
         }
     };
 
-//this function returns a boolean. True: succesfully deleted | False: otherwise
-async function deleteRecord(tableName, id){
+// a function to get the history of appointments
+async function getHistoryData(idToQuery, id){
     let sql = connect();
-
-    try{
-        // a variable with result as a data to delete. Postgres library requires the following syntax to pass parameters
-        let result = await sql`DELETE from ${sql(tableName)} WHERE id = ${id}`;
-
-        // check if the row has been deleted
-        return result.count > 0;
-
+    try {
+        // select query
+        let result = await sql`SELECT 
+            appointment.id,
+            doctor.id as doctor_id,
+            doctor.name as doctor_name, 
+            doctor.surname as doctor_surname, 
+            doctor.medical_center, 
+            patient.name as patient_name,
+            patient.surname as patient_surname,
+            category.value as category, 
+            status.value as status, 
+            appointment_date, 
+            appointment_time, 
+            patient_note, 
+            doctor_note 
+        FROM appointment
+            INNER JOIN doctor ON doctor_id = doctor.id
+            INNER JOIN patient ON patient_id = patient.id
+            INNER JOIN category ON doctor.category_id = category.id
+            INNER JOIN status ON status_id = status.id
+        WHERE ${sql(idToQuery)} = ${id} ORDER BY appointment_date ASC`;
+        return result;
     }catch(error){
-        console.log(`an error occurred trying to delete data with id: ${id} from table: ${tableName}`, error);
-        return false;
-        
+        // print a message if error
+        console.log(`no records found for ${idToQuery} with value ${id}`);
+        // return an empty result
+        return [];
+
     }finally{
-        //close the connection
-        sql.end(); 
+    //close the connection
+    sql.end();  
     }
-};
+}
 
 async function findTimeSlotsByDoctorAndDate(doctor_id, date){
     let sql = connect();
@@ -260,4 +277,4 @@ async function cancelAppointment(id) {
 }
 
 
-module.exports = {logIn, getTableData, deleteRecord, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, cancelAppointment};
+module.exports = {logIn, getTableData, findTimeSlotsByDoctorAndDate, findDoctorsByCategory, findDoctors, getUserInfo, getUserAppointments, saveAppointment, updateAppointment, getHistoryData, cancelAppointment};

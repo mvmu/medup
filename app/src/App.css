@@ -84,7 +84,7 @@ button:focus-visible {
   --color-primary70: #2960EC;
   --color-primary80: #174FDF;
   --color-primary90: #0A41CC;
-  --color-utility-danger: #E62E2E;
+  --color-utility-danger: #ff7272;
   --color-utility-info: #2EA2E6;
   --color-utility-warning: #EDA12F;
   --color-utility-success: #3DCC87;
@@ -92,12 +92,15 @@ button:focus-visible {
   --bg-custom: #E8EEFF;
 }
 
-body {
+html, body {
   font-family: 'Poppins', sans-serif;
   text-align: center;
   scroll-behavior: smooth;
   background-color: var(--bg-custom);
   color: var(--color-black);
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .glassmorphic {
@@ -109,5 +112,12 @@ body {
 #cardTitle {
   background-color: var(--color-primary30);
   color: var(--color-black);
+}
+
+#footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: auto;
 }
 

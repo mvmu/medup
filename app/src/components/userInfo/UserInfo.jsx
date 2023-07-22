@@ -46,10 +46,10 @@ const UserInfo = ({isDoctor}) => {
               </> 
     } else {
       return <>
-              <Link to="/manage">
+              <Link to="/history">
                   <Button 
                     className="btn btn-primary m-2"
-                    text="Manage appointments"
+                    text="Your appointment history"
                   />
                   </Link> 
               </> 
